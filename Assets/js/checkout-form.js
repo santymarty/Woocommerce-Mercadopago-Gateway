@@ -13,21 +13,29 @@
 
     $('form.checkout.woocommerce-checkout').on('checkout_place_order_wc_mp_gateway', function () {
         let form = document.querySelector(MP_Form);
-        MP.createToken(form, function (status, response) {
-            if (status === 200 || status === 201) {
-                let previousToken = form.querySelector('input[name="token"]');
-                if (previousToken) previousToken.remove();
-                let cardToken = document.createElement('input');
-                cardToken.setAttribute('name', 'token');
-                cardToken.setAttribute('type', 'hidden');
-                cardToken.setAttribute('value', response.id);
-                form.appendChild(cardToken);
-            }
-        });
+        MP_Helper.createToken(form);
+        let previousToken = form.querySelector('input[name="CcToken"]');
+        if (!previousToken) return false;
     });
 
     let MP_Helper = {
-        getBin: (number) => number.substring(0, 7)
+        getBin: (number) => number.substring(0, 7),
+        createToken: (form) => {
+            MP.createToken(form, function (status, response) {
+                if (status === 200 || status === 201) {
+                    let previousToken = form.querySelector('input[name="CcToken"]');
+                    if (previousToken) {
+                        previousToken.value = response.id;
+                    } else {
+                        let cardToken = document.createElement('input');
+                        cardToken.setAttribute('name', 'CcToken');
+                        cardToken.setAttribute('type', 'hidden');
+                        cardToken.setAttribute('value', response.id);
+                        form.appendChild(cardToken);
+                    }
+                }
+            });
+        }
     }
 
     class FormHandler {
@@ -38,13 +46,22 @@
                 ccName: form.querySelector('input[name="ccName"]'),
                 ccExpiry: form.querySelector('input[name="ccExpiry"]'),
                 ccNumber: form.querySelector('input[name="ccNumber"]'),
+                ccCvc: form.querySelector('input[name="ccCvc"]'),
+                ccDocumentNumber: form.querySelector('input[name="docNumber"]'),
                 hiddenPaymentMethodId: form.querySelector('input[name="hiddenPaymentMethodId"]'),
                 installments: form.querySelector('select[name="installments"]'),
                 hiddenInstallmentsType: form.querySelector('input[name="hiddenInstallmentsType"]'),
                 ccHiddenNumber: form.querySelector('input[name="hiddenCcNumber"]'),
-                //ccHiddenName: form.querySelector('input[name="hiddenCcName"]'),
                 ccHiddenMonth: form.querySelector('input[name="hiddenExpiryMonth"]'),
                 ccHiddenYear: form.querySelector('input[name="hiddenExpiryYear"]')
+            };
+            this.ccTokenValues = {
+                number: null,
+                name: null,
+                month: null,
+                year: null,
+                cvc: null,
+                document: null
             };
             new Card({
                 form: this.elems.form,
@@ -60,14 +77,48 @@
             this.elems.ccExpiry.addEventListener('keyup', this.handleExpiryDateChange.bind(this));
 
             this.elems.ccNumber.addEventListener('keyup', this.syncCcNumber.bind(this));
-            //this.elems.ccName.addEventListener('keyup', this.syncCcName.bind(this));
+
+            this.elems.form.addEventListener('keyup', this.checkCardToken.bind(this));
+        }
+        createCardToken = function () {
+
+            this.ccTokenValues.number = this.elems.ccHiddenNumber.value;
+            this.ccTokenValues.name = this.elems.ccName.value;
+            this.ccTokenValues.month = this.elems.ccHiddenMonth.value;
+            this.ccTokenValues.year = this.elems.ccHiddenYear.value;
+            this.ccTokenValues.cvc = this.elems.ccCvc.value;
+            this.ccTokenValues.document = this.elems.ccDocumentNumber.value;
+
+            MP_Helper.createToken(this.elems.form);
+        }
+        checkCardToken = function (e) {
+            let number = this.elems.ccHiddenNumber.value;
+            if (number.length < 16) return false;
+            let name = this.elems.ccName.value;
+            if (name.length < 3) return false;
+            let month = this.elems.ccHiddenMonth.value;
+            if (!month) return false;
+            let year = this.elems.ccHiddenYear.value;
+            if (!year) return false;
+            let cvc = this.elems.ccCvc.value;
+            if (cvc.length < 3) return false;
+            let document = this.elems.ccDocumentNumber.value;
+            if (document.length < 5) return false;
+
+            if (this.ccTokenValues.number !== number ||
+                this.ccTokenValues.month !== month ||
+                this.ccTokenValues.year !== year ||
+                this.ccTokenValues.cvc !== cvc ||
+                this.ccTokenValues.document !== document
+            ) {
+                this.createCardToken();
+            }
         }
         syncCcNumber = function (e) {
             let elem = e.currentTarget;
             let number = elem.value.replace(/\D/g, '');
             this.elems.ccHiddenNumber.value = number;
         }
-        //syncCcName = (e) => this.elems.ccHiddenName.value = e.currentTarget.value;
 
         handleNewccNumber = function (e) {
             let newBin = MP_Helper.getBin(this.elems.ccNumber.value);
@@ -81,17 +132,6 @@
                 'bin': newBin,
                 'amount': settings.cart_amount
             }, this.setInstallmentsInfo.bind(this));
-        }
-        handleCardToken = function (status, response) {
-            console.log(status, response);
-            if (status === 200 || status === 201) {
-                let cardToken = document.createElement('input');
-                cardToken.setAttribute('name', 'token');
-                cardToken.setAttribute('type', 'hidden');
-                cardToken.setAttribute('value', response.id);
-                this.elems.form.appendChild(cardToken);
-                console.log(cardToken);
-            }
         }
         handleExpiryDateChange(e) {
             let elem = e.currentTarget;
