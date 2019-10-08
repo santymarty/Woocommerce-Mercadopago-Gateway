@@ -120,11 +120,22 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
         \MercadoPago\SDK::setAccessToken($access_token);
 
         $order = wc_get_order($order_id);
-        if (empty($order)) return false;
-        $mp_preference = new MP_Payment($order);
+        if (empty($order) ||
+            empty($_POST['CcToken']) ||
+            empty($_POST['hiddenPaymentMethodId']) ||
+            empty($_POST['hiddenInstallmentsType']) ||
+            empty($_POST['installments']))
+            return false;
+
+        $extradata = [
+            'token' => filter_var($_POST['CcToken'], FILTER_SANITIZE_STRING),
+            'installments' => filter_var($_POST['installments'], FILTER_SANITIZE_STRING),
+            'payment_method_id' => filter_var($_POST['hiddenPaymentMethodId'], FILTER_SANITIZE_STRING),
+            'installments_type' => filter_var($_POST['hiddenInstallmentsType'], FILTER_SANITIZE_STRING)
+        ];
+        $mp_preference = new MP_Payment_Processor($order, $extradata);
         $mp_preference = $mp_preference->create();
-        Helper::log_debug($_POST);
-        //Helper::log_debug($mp_preference);
+        Helper::log_debug($mp_preference);
 
         return false;
 

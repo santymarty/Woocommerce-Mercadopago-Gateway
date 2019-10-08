@@ -1,17 +1,17 @@
 'use strict';
 
-(function (settings, MP, $) {
+((settings, MP, $) => {
 
     let oldBin;
     const MP_Form = '.wcmp-gateway-form';
 
     MP.setPublishableKey(settings.public_key);
 
-    $(document.body).on('updated_checkout', function () {
+    $(document.body).on('updated_checkout', () => {
         new FormHandler(MP_Form);
     });
 
-    $('form.checkout.woocommerce-checkout').on('checkout_place_order_wc_mp_gateway', function () {
+    $('form.checkout.woocommerce-checkout').on('checkout_place_order_wc_mp_gateway', () => {
         let form = document.querySelector(MP_Form);
         MP_Helper.createToken(form);
         let previousToken = form.querySelector('input[name="CcToken"]');
@@ -21,7 +21,7 @@
     let MP_Helper = {
         getBin: (number) => number.substring(0, 7),
         createToken: (form) => {
-            MP.createToken(form, function (status, response) {
+            MP.createToken(form, (status, response) => {
                 if (status === 200 || status === 201) {
                     let previousToken = form.querySelector('input[name="CcToken"]');
                     if (previousToken) {
@@ -75,12 +75,16 @@
             });
             this.elems.ccNumber.addEventListener('keyup', this.handleNewccNumber.bind(this));
             this.elems.ccExpiry.addEventListener('keyup', this.handleExpiryDateChange.bind(this));
-
+            this.elems.installments.addEventListener('change', this.showInstallmentLabel.bind(this));
             this.elems.ccNumber.addEventListener('keyup', this.syncCcNumber.bind(this));
-
             this.elems.form.addEventListener('keyup', this.checkCardToken.bind(this));
         }
-        createCardToken = function () {
+        showInstallmentLabel = () => {
+            let selected = this.elems.installments.selectedIndex;
+            let label = this.elems.installments.options[selected].getAttribute('data-label');
+            console.log(label);
+        }
+        createCardToken = () => {
 
             this.ccTokenValues.number = this.elems.ccHiddenNumber.value;
             this.ccTokenValues.name = this.elems.ccName.value;
@@ -91,7 +95,10 @@
 
             MP_Helper.createToken(this.elems.form);
         }
-        checkCardToken = function (e) {
+        checkCardToken = (e) => {
+            /* We could avoid this archaic method of checking for a new card token just by listening the
+            checkout_place_order_wc_mp_gateway event, but the MercadoPago SDK doesn't allow us to ask for 
+            a card token in a synchronously way, making that event "useless" */
             let number = this.elems.ccHiddenNumber.value;
             if (number.length < 16) return false;
             let name = this.elems.ccName.value;
@@ -114,13 +121,13 @@
                 this.createCardToken();
             }
         }
-        syncCcNumber = function (e) {
+        syncCcNumber = (e) => {
             let elem = e.currentTarget;
             let number = elem.value.replace(/\D/g, '');
             this.elems.ccHiddenNumber.value = number;
         }
 
-        handleNewccNumber = function (e) {
+        handleNewccNumber = (e) => {
             let newBin = MP_Helper.getBin(this.elems.ccNumber.value);
             if (newBin.length < 7 || oldBin === newBin) return;
             oldBin = newBin;
@@ -141,23 +148,23 @@
                 this.clearExpirationDate()
             }
         }
-        clearExpirationDate = function () {
+        clearExpirationDate = () => {
             this.elems.ccHiddenMonth.value = '';
             this.elems.ccHiddenYear.value = '';
         }
-        setExpirationDates = function (expDate) {
+        setExpirationDates = (expDate) => {
             let dates = expDate.match(/[0-9]{2}/g);
             if (dates.length !== 2) return false;
             this.setMonthExpirationDate(dates[0]);
             this.setYearExpirationDate(dates[1]);
         }
-        setPaymentMethodInfo = function (status, response) {
+        setPaymentMethodInfo = (status, response) => {
             if (status === 200) {
                 this.elems.hiddenPaymentMethodId.value = response[0].id;
                 MP.getIdentificationTypes();
             }
         }
-        setInstallmentsInfo = function (status, response) {
+        setInstallmentsInfo = (status, response) => {
             if (status === 200) {
                 let installments = null;
                 let installmentsBackup = null;
@@ -182,15 +189,24 @@
         setInstallments = (installments) => {
             installments.forEach(installment => {
                 let option = document.createElement('option');
+                let labels_length = installment.labels.length;
+                let index = 0;
+                for (index = 0; index < labels_length; index++) {
+                    const element = installment.labels[index];
+                    if (element.indexOf('CFT_') !== -1) {
+                        break;
+                    }
+                }
                 option.text = installment.recommended_message;
-                option.value = installment.installments;
+                option.setAttribute('data-label', installment.labels[index]);
+                option.setAttribute('value', installment.installments);
                 this.elems.installments.appendChild(option);
             });
         };
-        setMonthExpirationDate = function (month) {
+        setMonthExpirationDate = (month) => {
             this.elems.ccHiddenMonth.value = month
         };
-        setYearExpirationDate = function (year) {
+        setYearExpirationDate = (year) => {
             this.elems.ccHiddenYear.value = year
         };
     }

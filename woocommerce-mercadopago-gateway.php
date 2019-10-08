@@ -82,7 +82,7 @@ class WCMPGatewayCheckout
         require_once self::MAIN_DIR . '/Settings/Field.php';
 
         require_once self::MAIN_DIR . '/Gateway/WC_MP_Gateway.php';
-        require_once self::MAIN_DIR . '/Gateway/Payment.php';
+        require_once self::MAIN_DIR . '/Gateway/MP_Payment_Processor.php';
         Helper::init();
     }
 
