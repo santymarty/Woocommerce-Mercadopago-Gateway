@@ -15,6 +15,16 @@ class FieldFactory
     {
         $fields = Main::get_settings_fields();
         if (empty($fields[$slug])) return false;
-        return new Field($fields[$slug]);
+        switch ($fields[$slug]['type']) {
+            case 'text':
+                $field = new TextField($fields[$slug]);
+                break;
+            case 'select':
+                $field = new SelectField($fields[$slug]);
+                break;
+            default:
+                $field = false;
+        }
+        return $field;
     }
 }

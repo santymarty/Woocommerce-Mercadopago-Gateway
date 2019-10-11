@@ -8,7 +8,7 @@ class Helper
     use LoggerTrait;
     use SettingsTrait;
 
-    public static function convert_array_into_object($array)
+    public static function convert_array_into_object(array $array)
     {
         $object = new \stdClass();
         foreach ($array as $key => $value)

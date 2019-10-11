@@ -4,15 +4,15 @@ namespace Macr1408\MPGatewayCheckout\Settings;
 
 class Field implements FieldInterface
 {
-    private $data = [
+    protected $data = [
         'name' => '',
         'slug' => '',
         'type' => '',
         'description' => '',
-        'default' => ''
+        'default' => '',
     ];
 
-    public function __construct($args)
+    public function __construct(array $args)
     {
         $this->data = wp_parse_args($args, $this->data);
     }
@@ -42,7 +42,7 @@ class Field implements FieldInterface
         return $this->data['description'];
     }
 
-    public function get_option()
+    public function get_value()
     {
         return get_option(\WCMPGatewayCheckout::DOMAIN_NAME . '-' . $this->data['slug'], $this->data['default']);
     }

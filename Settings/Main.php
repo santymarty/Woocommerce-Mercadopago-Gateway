@@ -19,6 +19,7 @@ class Main
 
     public static function get_settings_fields()
     {
+        $order_statuses = wc_get_order_statuses();
         return [
             'public_key' => [
                 'name' => 'Public Key',
@@ -32,23 +33,13 @@ class Main
                 'type' => 'text',
                 'description' => __('Your MercadoPago Access Token', \WCMPGatewayCheckout::DOMAIN_NAME)
             ],
-            'success_url' => [
-                'name' => __('Success URL', \WCMPGatewayCheckout::DOMAIN_NAME),
-                'slug' => 'success_url',
-                'type' => 'text',
-                'description' => __('URL where the customer should be redirected after checkout when payment is successful. Leavy empty to use default', \WCMPGatewayCheckout::DOMAIN_NAME),
-            ],
-            'pending_url' => [
-                'name' => __('Pending URL', \WCMPGatewayCheckout::DOMAIN_NAME),
-                'slug' => 'pending_url',
-                'type' => 'text',
-                'description' => __('URL where the customer should be redirected after checkout when payment is pending. Leavy empty to use default', \WCMPGatewayCheckout::DOMAIN_NAME),
-            ],
-            'failure_url' => [
-                'name' => __('Failure URL', \WCMPGatewayCheckout::DOMAIN_NAME),
-                'slug' => 'failure_url',
-                'type' => 'text',
-                'description' => __('URL where the customer should be redirected after checkout when payment fails. Leavy empty to use default', \WCMPGatewayCheckout::DOMAIN_NAME),
+            'binary_mode' => [
+                'name' => __('Set MercadoPago in binary mode', \WCMPGatewayCheckout::DOMAIN_NAME),
+                'slug' => 'binary_mode',
+                'type' => 'select',
+                'description' => __('When this is activated, the payment goes approved or failed, it can\t go to the pending state', \WCMPGatewayCheckout::DOMAIN_NAME),
+                'default' => 'true',
+                'options' => ['true' => 'Si', 'false' => 'No']
             ],
             'store_prefix' => [
                 'name' => __('Store prefix', \WCMPGatewayCheckout::DOMAIN_NAME),
@@ -56,7 +47,31 @@ class Main
                 'type' => 'text',
                 'description' => __('This is the prefix of the order receipt that your customers will see', \WCMPGatewayCheckout::DOMAIN_NAME),
                 'default' => 'WC-'
-            ]
+            ],
+            'status_payment_approved' => [
+                'name' => __('Status when the payment is approved', \WCMPGatewayCheckout::DOMAIN_NAME),
+                'slug' => 'status_payment_approved',
+                'type' => 'select',
+                'description' => __('This is the status the order will have when the payment is approved', \WCMPGatewayCheckout::DOMAIN_NAME),
+                'default' => 'wc-processing',
+                'options' => $order_statuses
+            ],
+            'status_payment_in_process' => [
+                'name' => __('Status when the payment is in process', \WCMPGatewayCheckout::DOMAIN_NAME),
+                'slug' => 'status_payment_in_process',
+                'type' => 'select',
+                'description' => __('This is the status the order will have when the payment is in process', \WCMPGatewayCheckout::DOMAIN_NAME),
+                'default' => 'wc-pending',
+                'options' => $order_statuses
+            ],
+            'status_payment_rejected' => [
+                'name' => __('Status when the payment is rejected', \WCMPGatewayCheckout::DOMAIN_NAME),
+                'slug' => 'status_payment_rejected',
+                'type' => 'select',
+                'description' => __('This is the status the order will have when the payment is rejected', \WCMPGatewayCheckout::DOMAIN_NAME),
+                'default' => 'wc-failed',
+                'options' => $order_statuses
+            ],
         ];
     }
 
@@ -97,24 +112,10 @@ class Main
         if ($field !== false) $field->render();
     }
 
-    public static function print_success_url()
+    public static function print_binary_mode()
     {
         $fFactory = new FieldFactory();
-        $field = $fFactory->create('success_url');
-        if ($field !== false) $field->render();
-    }
-
-    public static function print_pending_url()
-    {
-        $fFactory = new FieldFactory();
-        $field = $fFactory->create('pending_url');
-        if ($field !== false) $field->render();
-    }
-
-    public static function print_failure_url()
-    {
-        $fFactory = new FieldFactory();
-        $field = $fFactory->create('failure_url');
+        $field = $fFactory->create('binary_mode');
         if ($field !== false) $field->render();
     }
 
@@ -125,7 +126,28 @@ class Main
         if ($field !== false) $field->render();
     }
 
-    public static function add_assets_files($hook)
+    public static function print_status_payment_approved()
+    {
+        $fFactory = new FieldFactory();
+        $field = $fFactory->create('status_payment_approved');
+        if ($field !== false) $field->render();
+    }
+
+    public static function print_status_payment_in_process()
+    {
+        $fFactory = new FieldFactory();
+        $field = $fFactory->create('status_payment_in_process');
+        if ($field !== false) $field->render();
+    }
+
+    public static function print_status_payment_rejected()
+    {
+        $fFactory = new FieldFactory();
+        $field = $fFactory->create('status_payment_rejected');
+        if ($field !== false) $field->render();
+    }
+
+    public static function add_assets_files(string $hook)
     {
         if ($hook === 'settings_page_wcmp-gateway-checkout-settings') {
             wp_enqueue_style(\WCMPGatewayCheckout::DOMAIN_NAME . '-admin.css', plugin_dir_url(\WCMPGatewayCheckout::MAIN_FILE) . 'Assets/css/admin.css', [], null);
@@ -161,15 +183,13 @@ class Main
             <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
             <form action="options-general.php?page=wcmp-gateway-checkout-settings" method="post" class="form-wrapper">
                 <?php
-                settings_fields('wcmp-gateway-checkout-settings');
-                do_settings_sections('wcmp-gateway-checkout-settings');
-                submit_button(__('Save', \WCMPGatewayCheckout::DOMAIN_NAME));
-                ?>
+                        settings_fields('wcmp-gateway-checkout-settings');
+                        do_settings_sections('wcmp-gateway-checkout-settings');
+                        submit_button(__('Save', \WCMPGatewayCheckout::DOMAIN_NAME));
+                        ?>
             </form>
         </div>
-        <?php
+<?php
 
     }
 }
-
-

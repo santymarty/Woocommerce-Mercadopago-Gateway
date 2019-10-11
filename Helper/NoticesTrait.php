@@ -19,7 +19,7 @@ trait NoticesTrait
         }
     }
 
-    private static function add_notice($type, $msg, $do_action = false)
+    private static function add_notice(string $type, string $msg, bool $do_action = false)
     {
         $notices = get_transient('wcmp-gateway-checkout-' . $type . '-notices');
         if (!empty($notices)) {
@@ -31,17 +31,17 @@ trait NoticesTrait
         if ($do_action) do_action('admin_notices');
     }
 
-    public static function add_error($msg, $do_action = false)
+    public static function add_error(string $msg, bool $do_action = false)
     {
         self::add_notice('error', $msg, $do_action);
     }
 
-    public static function add_success($msg, $do_action = false)
+    public static function add_success(string $msg, bool $do_action = false)
     {
         self::add_notice('success', $msg, $do_action);
     }
 
-    public static function add_info($msg, $do_action = false)
+    public static function add_info(string $msg, bool $do_action = false)
     {
         self::add_notice('info', $msg, $do_action);
     }

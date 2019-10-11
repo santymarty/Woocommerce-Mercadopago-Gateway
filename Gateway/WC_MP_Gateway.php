@@ -2,14 +2,11 @@
 
 namespace Macr1408\MPGatewayCheckout\Gateway;
 
-use Macr1408\MPGatewayCheckout\Settings\Main;
 use Macr1408\MPGatewayCheckout\Helper\Helper;
 
 
-defined('ABSPATH') || exit;
-if (!class_exists('\WC_Payment_Gateway')) return;
+defined('ABSPATH') || class_exists('\WC_Payment_Gateway') || exit;
 
-add_filter('woocommerce_payment_gateways', __NAMESPACE__ . '\WC_MP_Gateway_add_method');
 function wc_mp_gateway_add_method($gateways)
 {
     $gateways[] = 'Macr1408\MPGatewayCheckout\Gateway\WC_MP_Gateway';
@@ -20,12 +17,12 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
 {
     public function __construct()
     {
+        require_once \WCMPGatewayCheckout::MAIN_DIR . '/vendor/autoload.php';
         // Load the settings.
         $this->init_form_fields();
         $this->init_settings();
         // Setup general properties.
         $this->setup_properties();
-        require_once \WCMPGatewayCheckout::MAIN_DIR . '/vendor/autoload.php';
     }
 
     private function setup_properties()
@@ -41,6 +38,8 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
 
         $access_token = Helper::get_option('access_token');
         if (empty($access_token)) $this->enabled = false;
+        \MercadoPago\SDK::setAccessToken($access_token);
+        new IPNProcessor($access_token);
     }
 
     public function init_form_fields()
@@ -78,53 +77,51 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
         ]);
         wp_enqueue_style('wcmp-gateway-grid');
         ?>
-            <div class="wcmp-gateway-form-card"></div>
-            <div class="wcmp-gateway-form wcmp-gateway-wrapper">
-                <input placeholder="Card number" type="text" name="ccNumber" autocomplete="cc-number">
-                <input placeholder="Full name" type="text" name="ccName" autocomplete="cc-name" data-checkout="cardholderName">
-                <div class="row">
-                    <div class="col l6">
-                        <input placeholder="MM/YY" type="text" name="ccExpiry" autocomplete="cc-exp">
-                    </div>
-                    <div class="col l6">
-                        <input placeholder="CVC" type="number" name="ccCvc" autocomplete="cc-csc" data-checkout="securityCode">
-                    </div>
+        <div class="wcmp-gateway-form-card"></div>
+        <div class="wcmp-gateway-form wcmp-gateway-wrapper">
+            <input placeholder="Card number" type="text" name="ccNumber" autocomplete="cc-number">
+            <input placeholder="Full name" type="text" name="ccName" autocomplete="cc-name" data-checkout="cardholderName">
+            <div class="row">
+                <div class="col l6">
+                    <input placeholder="MM/YY" type="text" name="ccExpiry" autocomplete="cc-exp">
                 </div>
-                <div class="row">
-                    <div class="col l5">
-                        <select name="docType" data-checkout="docType">
-                            <option disabled selected>Documento</option>
-                        </select>
-                    </div>
-                    <div class="col l7">
-                        <input type="text" name="docNumber" data-checkout="docNumber" placeholder="Document Number" />
-                    </div>
+                <div class="col l6">
+                    <input placeholder="CVC" type="number" name="ccCvc" autocomplete="cc-csc" data-checkout="securityCode">
                 </div>
-                <select name="installments" id="installments">
-                    <option disabled selected>Seleccionar Cuotas</option>
-                </select>
-                <input type="hidden" name="hiddenCcNumber" data-checkout="cardNumber">
-                <input type="hidden" name="hiddenExpiryMonth" data-checkout="cardExpirationMonth">
-                <input type="hidden" name="hiddenExpiryYear" data-checkout="cardExpirationYear">
-                <input type="hidden" name="hiddenPaymentMethodId" />
-                <input type="hidden" name="hiddenInstallmentsType">
             </div>
-        <?php
+            <div class="row">
+                <div class="col l5">
+                    <select name="docType" data-checkout="docType">
+                        <option disabled selected>Documento</option>
+                    </select>
+                </div>
+                <div class="col l7">
+                    <input type="text" name="docNumber" data-checkout="docNumber" placeholder="Document Number" />
+                </div>
+            </div>
+            <select name="installments" id="installments">
+                <option disabled selected>Seleccionar Cuotas</option>
+            </select>
+            <input type="hidden" name="hiddenCcNumber" data-checkout="cardNumber">
+            <input type="hidden" name="hiddenExpiryMonth" data-checkout="cardExpirationMonth">
+            <input type="hidden" name="hiddenExpiryYear" data-checkout="cardExpirationYear">
+            <input type="hidden" name="hiddenPaymentMethodId" />
+            <input type="hidden" name="hiddenInstallmentsType">
+        </div>
+<?php
 
     }
 
     public function process_payment($order_id)
     {
-        $access_token = Helper::get_option('access_token');
-        if (empty($access_token)) return;
-        \MercadoPago\SDK::setAccessToken($access_token);
-
         $order = wc_get_order($order_id);
-        if (empty($order) ||
+        if (
+            empty($order) ||
             empty($_POST['CcToken']) ||
             empty($_POST['hiddenPaymentMethodId']) ||
             empty($_POST['hiddenInstallmentsType']) ||
-            empty($_POST['installments']))
+            empty($_POST['installments'])
+        )
             return false;
 
         $extradata = [
@@ -135,28 +132,56 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
         ];
         $mp_preference = new MP_Payment_Processor($order, $extradata);
         $mp_preference = $mp_preference->create();
-        Helper::log_debug($mp_preference);
 
-        return false;
+        // If our payment fails for whatever reason, catch it
+        if (empty($mp_preference->status)) {
+            wc_add_notice(__('There was an error in the payment, please try again', \WCMPGatewayCheckout::DOMAIN_NAME), 'error');
+            return false;
+        }
 
-        return array(
-            'result' => 'success',
-            'redirect' => $this->get_return_url($order),
-        );
+
+        return $this->handle_payment_response($mp_preference->status, $mp_preference->status_detail, $this->get_return_url($order));
     }
 
-    public static function wrapper_get_return_url($order = null)
+    protected function handle_payment_response(string $status, string $status_detail, string $success_url)
     {
-        if ($order) {
-            $return_url = $order->get_checkout_order_received_url();
+        if ($status === 'approved' || $status === 'in_process') {
+            return [
+                'result' => 'success',
+                'redirect' => $success_url
+            ];
+        } else if ($status === 'rejected') {
+            $msg = self::handle_rejected_payment($status_detail);
+            wc_add_notice($msg, 'error');
+            return false;
         } else {
-            $return_url = wc_get_endpoint_url('order-received', '', wc_get_page_permalink('checkout'));
+            wc_add_notice(__('There was an error in the payment, please try again', \WCMPGatewayCheckout::DOMAIN_NAME), 'error');
+            return false;
         }
+        return [
+            'result' => 'failure',
+            'messages' => $msg
+        ];
+    }
 
-        if (is_ssl() || get_option('woocommerce_force_ssl_checkout') == 'yes') {
-            $return_url = str_replace('http:', 'https:', $return_url);
-        }
-
-        return apply_filters('woocommerce_get_return_url', $return_url, $order);
+    public static function handle_rejected_payment(string $status_detail)
+    {
+        $errors = [
+            'cc_rejected_bad_filled_card_number' => 'Revisa el número de tu tarjeta.',
+            'cc_rejected_bad_filled_date' => 'Revisa la fecha de vencimient de tu tarjetao.',
+            'cc_rejected_bad_filled_other' => 'Revisa los datos ingresados.',
+            'cc_rejected_bad_filled_security_code' => 'Revisa el código de seguridad ingresado.',
+            'cc_rejected_blacklist' => 'No pudimos procesar tu pago. Intenta con otra tarjeta',
+            'cc_rejected_call_for_authorize' => 'Debes autorizar este pago ante el emisor de tu tarjeta. El teléfono está al dorso de tu tarjeta.',
+            'cc_rejected_card_disabled' => 'Llama a tu emisor para que active tu tarjeta. El teléfono está al dorso de tu tarjeta.',
+            'cc_rejected_card_error' => 'No pudimos procesar tu pago.',
+            'cc_rejected_duplicated_payment' => 'Ya hiciste un pago por ese valor. Si necesitas volver a pagar usa otra tarjeta u otro medio de pago.',
+            'cc_rejected_high_risk' => 'Tu pago fue rechazado. Intenta nuevamente con otra tarjeta.',
+            'cc_rejected_insufficient_amount' => 'Tu tarjeta no tiene fondos suficientes.',
+            'cc_rejected_invalid_installments' => 'La tarjeta usada no procesa pagos cuotas.',
+            'cc_rejected_max_attempts' => 'Llegaste al límite de intentos permitidos. Intenta nuevamente con otra tarjeta.',
+            'cc_rejected_other_reason' => 'No se pudo realizar el pago, por favor intentá nuevamente.'
+        ];
+        return (!empty($errors[$status_detail]) ? $errors[$status_detail] : $errors['cc_rejected_other_reason']);
     }
 }

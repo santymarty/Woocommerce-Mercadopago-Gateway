@@ -29,7 +29,7 @@ class MP_Payment_Processor
         $payment->processing_mode = $this->installments_type;
         $payment->token = $this->token;
         $payment->binary_mode = $this->get_binary_mode();
-        $payment->notification_url = $this->notification_url();
+        $payment->notification_url = $this->get_notification_url();
         $payment->installments = $this->installments;
         $payment->payment_method_id = $this->payment_method_id;
         $payment->transaction_amount = $this->order->get_total('edit');
@@ -66,7 +66,7 @@ class MP_Payment_Processor
         $address = [
             'zip_code' => $this->order->get_billing_postcode(),
             'street_name' =>
-                $this->order->get_billing_address_1() . ' / ' .
+            $this->order->get_billing_address_1() . ' / ' .
                 $this->order->get_billing_city() . ' ' .
                 $this->order->get_billing_state() . ', ' .
                 $this->order->get_billing_country()
@@ -90,7 +90,7 @@ class MP_Payment_Processor
     protected function get_payer_extra()
     {
         $payer = $this->get_payer();
-        $phone = ['number' => (string)$this->order->get_billing_phone()];
+        $phone = ['number' => (string) $this->order->get_billing_phone()];
         $phone = Helper::convert_array_into_object($phone);
         $payer['phone'] = $phone;
         return Helper::convert_array_into_object($payer);
@@ -102,7 +102,7 @@ class MP_Payment_Processor
             'receiver_address' => [
                 'zip_code' => $this->order->get_shipping_postcode(),
                 'street_name' =>
-                    $this->order->get_shipping_address_1() . ' / ' .
+                $this->order->get_shipping_address_1() . ' / ' .
                     $this->order->get_shipping_city() . ' ' .
                     $this->order->get_shipping_state() . ', ' .
                     $this->order->get_shipping_country()
@@ -128,12 +128,11 @@ class MP_Payment_Processor
 
     protected function get_binary_mode()
     {
-        return Helper::get_option('binary_mode');
+        return Helper::get_option('binary_mode', true);
     }
 
     protected function get_notification_url()
     {
-        // TODO
-        return 'https://';
+        return get_site_url(null, '/wc-api/mp-gateway-ipn');
     }
 }

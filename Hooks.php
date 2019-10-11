@@ -12,3 +12,4 @@ add_action('admin_menu', 'Macr1408\MPGatewayCheckout\Settings\Main::create_menu_
 add_action('admin_enqueue_scripts', 'Macr1408\MPGatewayCheckout\Settings\Main::add_assets_files');
 
 // --- Payment Method
+add_filter('woocommerce_payment_gateways', 'Macr1408\MPGatewayCheckout\Gateway\WC_MP_Gateway_add_method');

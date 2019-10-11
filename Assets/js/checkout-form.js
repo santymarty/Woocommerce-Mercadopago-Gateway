@@ -7,9 +7,7 @@
 
     MP.setPublishableKey(settings.public_key);
 
-    $(document.body).on('updated_checkout', () => {
-        new FormHandler(MP_Form);
-    });
+    $(document.body).on('updated_checkout', () => new FormHandler(MP_Form));
 
     $('form.checkout.woocommerce-checkout').on('checkout_place_order_wc_mp_gateway', () => {
         let form = document.querySelector(MP_Form);
@@ -21,6 +19,7 @@
     let MP_Helper = {
         getBin: (number) => number.substring(0, 7),
         createToken: (form) => {
+            MP.clearSession();
             MP.createToken(form, (status, response) => {
                 if (status === 200 || status === 201) {
                     let previousToken = form.querySelector('input[name="CcToken"]');
@@ -187,6 +186,9 @@
             }
         }
         setInstallments = (installments) => {
+            while (this.elems.installments.options.length)
+                this.elems.installments.options.remove(0)
+
             installments.forEach(installment => {
                 let option = document.createElement('option');
                 let labels_length = installment.labels.length;

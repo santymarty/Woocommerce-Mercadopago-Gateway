@@ -2,13 +2,11 @@
 
 namespace Macr1408\MPGatewayCheckout\Settings;
 
-use Macr1408\MPGatewayCheckout\Helper\Helper;
-
 defined('ABSPATH') || exit;
 
 class FieldsVerifier
 {
-    public static function save_settings($post_data)
+    public static function save_settings(array $post_data)
     {
         $saved = false;
         $settings_fields = Main::get_settings_fields();
