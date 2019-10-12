@@ -37,7 +37,7 @@ class Main
                 'name' => __('Set MercadoPago in binary mode', \WCMPGatewayCheckout::DOMAIN_NAME),
                 'slug' => 'binary_mode',
                 'type' => 'select',
-                'description' => __('When this is activated, the payment goes approved or failed, it can\t go to the pending state', \WCMPGatewayCheckout::DOMAIN_NAME),
+                'description' => __('When this is activated, the payment goes approved or failed, it can\'t go to the pending state', \WCMPGatewayCheckout::DOMAIN_NAME),
                 'default' => 'true',
                 'options' => ['true' => 'Si', 'false' => 'No']
             ],
@@ -91,67 +91,21 @@ class Main
             add_settings_field(
                 'wcmp-gateway-checkout-' . $setting['slug'],
                 $setting['name'],
-                __class__ . '::print_' . $setting['slug'],
+                function () use ($setting) {
+                    $fFactory = new FieldFactory();
+                    $field = $fFactory->create($setting['slug']);
+                    if ($field !== false) $field->render();
+                },
                 'wcmp-gateway-checkout-settings',
                 'wcmp-gateway-checkout'
             );
         }
     }
 
-    public static function print_public_key()
-    {
-        $fFactory = new FieldFactory();
-        $field = $fFactory->create('public_key');
-        if ($field !== false) $field->render();
-    }
-
-    public static function print_access_token()
-    {
-        $fFactory = new FieldFactory();
-        $field = $fFactory->create('access_token');
-        if ($field !== false) $field->render();
-    }
-
-    public static function print_binary_mode()
-    {
-        $fFactory = new FieldFactory();
-        $field = $fFactory->create('binary_mode');
-        if ($field !== false) $field->render();
-    }
-
-    public static function print_store_prefix()
-    {
-        $fFactory = new FieldFactory();
-        $field = $fFactory->create('store_prefix');
-        if ($field !== false) $field->render();
-    }
-
-    public static function print_status_payment_approved()
-    {
-        $fFactory = new FieldFactory();
-        $field = $fFactory->create('status_payment_approved');
-        if ($field !== false) $field->render();
-    }
-
-    public static function print_status_payment_in_process()
-    {
-        $fFactory = new FieldFactory();
-        $field = $fFactory->create('status_payment_in_process');
-        if ($field !== false) $field->render();
-    }
-
-    public static function print_status_payment_rejected()
-    {
-        $fFactory = new FieldFactory();
-        $field = $fFactory->create('status_payment_rejected');
-        if ($field !== false) $field->render();
-    }
-
     public static function add_assets_files(string $hook)
     {
-        if ($hook === 'settings_page_wcmp-gateway-checkout-settings') {
-            wp_enqueue_style(\WCMPGatewayCheckout::DOMAIN_NAME . '-admin.css', plugin_dir_url(\WCMPGatewayCheckout::MAIN_FILE) . 'Assets/css/admin.css', [], null);
-        }
+        if ($hook === 'settings_page_wcmp-gateway-checkout-settings')
+            wp_enqueue_style('wcmp-gateway-settings-css', plugin_dir_url(\WCMPGatewayCheckout::MAIN_FILE) . 'Assets/css/settings.css');
     }
 
     public static function create_menu_option()
@@ -161,7 +115,7 @@ class Main
             'MercadoPago Gateway Checkout',
             'manage_options',
             'wcmp-gateway-checkout-settings',
-            __class__ . '::settings_page_content'
+            [__CLASS__, 'settings_page_content']
         );
     }
 
@@ -178,9 +132,12 @@ class Main
         $settings_saved = FieldsVerifier::save_settings($_POST);
         if ($settings_saved)
             Helper::add_success(__('Settings saved', \WCMPGatewayCheckout::DOMAIN_NAME), true);
+
+        $logo_url = plugin_dir_url(\WCMPGatewayCheckout::MAIN_FILE) . 'Assets/img/mercadopago.png';
         ?>
-        <div class="wrap">
+        <div class="mp-wrapper wrap">
             <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+            <img src="<?php echo $logo_url; ?>" class="mp-logo">
             <form action="options-general.php?page=wcmp-gateway-checkout-settings" method="post" class="form-wrapper">
                 <?php
                         settings_fields('wcmp-gateway-checkout-settings');

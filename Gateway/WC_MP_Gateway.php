@@ -44,26 +44,26 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
 
     public function init_form_fields()
     {
-        $this->form_fields = array(
-            'enabled' => array(
+        $this->form_fields = [
+            'enabled' => [
                 'title' => __('Enable/Disable', 'woocommerce'),
                 'type' => 'checkbox',
                 'label' => __('Enable', 'woocommerce'),
                 'default' => 'yes'
-            ),
-            'title' => array(
+            ],
+            'title' => [
                 'title' => __('Title', 'woocommerce'),
                 'type' => 'text',
                 'description' => __('This controls the title which the customer sees during checkout.', \WCMPGatewayCheckout::DOMAIN_NAME),
                 'default' => __('MercadoPago', \WCMPGatewayCheckout::DOMAIN_NAME)
-            ),
-            'description' => array(
+            ],
+            'description' => [
                 'title' => __('Message in checkout', \WCMPGatewayCheckout::DOMAIN_NAME),
                 'type' => 'textarea',
                 'description' => __('Set your custom message to be shown in the checkout when the customer selects this payment method. Can be empty', \WCMPGatewayCheckout::DOMAIN_NAME),
                 'default' => __('Pay with Mercadopago, up to 12 installments with all credit cards', \WCMPGatewayCheckout::DOMAIN_NAME)
-            )
-        );
+            ]
+        ];
     }
 
     public function form()
