@@ -5,13 +5,12 @@ use Macr1408\MPGatewayCheckout\Helper\Helper;
 /**
  * Plugin Name: WooCommerce Mercadopago Gateway Checkout
  * Plugin URI: https://macr1408.github.io/
- * Description: Integration between Mercadopago and WooCommerce, using smart checkout.
+ * Description: Integration between Mercadopago Gateway and WooCommerce, using custom checkout.
  * Version: 1.0
  * Author: Macr1408
  * Author URI: https://macr1408.github.io/
- * Text Domain: wcmp-gateway-checkout
+ * Text Domain: wc-mp-gateway-checkout
  * Domain Path: /i18n/languages/
- *
  */
 
 defined('ABSPATH') || exit;
@@ -22,7 +21,6 @@ add_action('wp_enqueue_scripts', ['WCMPGatewayCheckout', 'load_scripts']);
 class WCMPGatewayCheckout
 {
     const PLUGIN_NAME = 'WooCommerce Mercadopago Gateway Checkout';
-    const DOMAIN_NAME = 'wcmp-gateway-checkout';
     const MAIN_FILE = __FILE__;
     const MAIN_DIR = __DIR__;
 
@@ -33,14 +31,14 @@ class WCMPGatewayCheckout
         if ($system['flag']) {
             deactivate_plugins(plugin_basename(__FILE__));
             echo '<div class="notice notice-error is-dismissible">';
-            echo '<p>' . sprintf(__('<strong>WooCommerce Mercadopago Gateway Checkout</strong> Requires at least %s version %s or greater.</p>', self::DOMAIN_NAME), $system['flag'], $system['version']) . '</p>';
+            echo '<p>' . sprintf(__('<strong>WooCommerce Mercadopago Gateway Checkout</strong> Requires at least %s version %s or greater.</p>', 'wc-mp-gateway-checkout'), $system['flag'], $system['version']) . '</p>';
             echo '</div>';
             return false;
         }
         if (!class_exists('WooCommerce')) {
             deactivate_plugins(plugin_basename(__FILE__));
             echo '<div class="notice notice-error is-dismissible">';
-            echo '<p>' . __('WooCommerce must be active before using <strong>WooCommerce Mercadopago Gateway Checkout</strong>', self::DOMAIN_NAME) . '</p>';
+            echo '<p>' . __('WooCommerce must be active before using <strong>WooCommerce Mercadopago Gateway Checkout</strong>', 'wc-mp-gateway-checkout') . '</p>';
             echo '</div>';
             return false;
         }
@@ -77,30 +75,41 @@ class WCMPGatewayCheckout
         require_once __DIR__ . '/Settings/Main.php';
         require_once __DIR__ . '/Settings/FieldsPrinter.php';
         require_once __DIR__ . '/Settings/FieldsVerifier.php';
-        require_once __DIR__ . '/Settings/FieldInterface.php';
         require_once __DIR__ . '/Settings/FieldFactory.php';
-        require_once __DIR__ . '/Settings/Field.php';
-        require_once __DIR__ . '/Settings/TextField.php';
-        require_once __DIR__ . '/Settings/SelectField.php';
+        require_once __DIR__ . '/Settings/Fields/FieldInterface.php';
+        require_once __DIR__ . '/Settings/Fields/Field.php';
+        require_once __DIR__ . '/Settings/Fields/TextField.php';
+        require_once __DIR__ . '/Settings/Fields/SelectField.php';
+        require_once __DIR__ . '/Settings/Fields/NumberField.php';
+        require_once __DIR__ . '/Settings/Sections/SectionInterface.php';
+        require_once __DIR__ . '/Settings/Sections/Section.php';
+        require_once __DIR__ . '/Settings/Sections/MpSection.php';
+        require_once __DIR__ . '/Settings/Sections/FrontendSection.php';
 
         require_once __DIR__ . '/Gateway/WC_MP_Gateway.php';
         require_once __DIR__ . '/Gateway/MP_Payment_Processor.php';
         require_once __DIR__ . '/Gateway/IPNProcessor.php';
         Helper::init();
+        self::load_textdomain();
     }
 
     public static function load_scripts()
     {
-        wp_register_script('wcmp-gateway-cc-card', plugin_dir_url(__FILE__) . 'Assets/js/card.js');
-        wp_register_script('wcmp-gateway-cc-card-form', plugin_dir_url(__FILE__) . 'Assets/js/checkout-form.js', ['jquery']);
-        wp_register_script('wcmp-gateway-mp-sdk', 'https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js');
-        wp_register_style('wcmp-gateway-grid', plugin_dir_url(__FILE__) . 'Assets/css/grids-responsive-min.css');
-        wp_register_style('wcmp-gateway-settings-css', plugin_dir_url(__FILE__) . 'Assets/css/settings.css');
+        wp_register_script('wc-mp-gateway-cc-card', plugin_dir_url(__FILE__) . 'Assets/js/card.min.js');
+        wp_register_script('wc-mp-gateway-cc-card-form', plugin_dir_url(__FILE__) . 'Assets/js/checkout-form.min.js', ['jquery']);
+        wp_register_script('wc-mp-gateway-mp-sdk', 'https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js');
+        wp_register_style('wc-mp-gateway-grid', plugin_dir_url(__FILE__) . 'Assets/css/grids-responsive-min.css');
+        wp_register_style('wc-mp-gateway-settings-css', plugin_dir_url(__FILE__) . 'Assets/css/settings.min.css');
     }
 
     public static function create_settings_link(array $links)
     {
-        $links[] = '<a href="' . esc_url(get_admin_url(null, 'options-general.php?page=wcmp-gateway-checkout-settings')) . '">' . __('Settings', self::DOMAIN_NAME) . '</a>';
+        $links[] = '<a href="' . esc_url(get_admin_url(null, 'options-general.php?page=wc-mp-gateway-checkout-settings')) . '">' . __('Settings', 'wc-mp-gateway-checkout') . '</a>';
         return $links;
+    }
+
+    public static function load_textdomain()
+    {
+        load_plugin_textdomain('wc-mp-gateway-checkout', false, basename(dirname(__FILE__)) . '/i18n/languages');
     }
 }

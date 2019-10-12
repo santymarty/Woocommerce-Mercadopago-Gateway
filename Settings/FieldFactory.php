@@ -2,6 +2,10 @@
 
 namespace Macr1408\MPGatewayCheckout\Settings;
 
+use Macr1408\MPGatewayCheckout\Settings\Fields\NumberField;
+use Macr1408\MPGatewayCheckout\Settings\Fields\SelectField;
+use Macr1408\MPGatewayCheckout\Settings\Fields\TextField;
+
 class FieldFactory
 {
 
@@ -21,6 +25,9 @@ class FieldFactory
                 break;
             case 'select':
                 $field = new SelectField($fields[$slug]);
+                break;
+            case 'number':
+                $field = new NumberField($fields[$slug]);
                 break;
             default:
                 $field = false;

@@ -27,7 +27,7 @@ class IPNProcessor
         $data = wp_unslash($data);
         if (empty($data['type']) || $data['type'] !== 'payment' || empty($data['data']['id'])) return false;
         $payment_id = wc_sanitize_order_id($data['data']['id']);
-        Helper::log_debug('https://api.mercadopago.com/v1/payments/' . $payment_id . '?access_token=' . $this->access_token);
+        Helper::log_info('https://api.mercadopago.com/v1/payments/' . $payment_id . '?access_token=' . $this->access_token);
 
         /**
          * We use regular http request instead of SDK because the latter doesn't seem to work with payments notifications
@@ -73,28 +73,28 @@ class IPNProcessor
             $status = Helper::get_option('status_payment_approved', 'wc-completed');
             $order->update_status(
                 $status,
-                sprintf(__('Mercadopago Gateway - Payment: %s was approved ', \WCMPGatewayCheckout::DOMAIN_NAME), $mp_data['payment_id'])
+                sprintf(__('Mercadopago Gateway - Payment: %s was approved ', 'wc-mp-gateway-checkout'), $mp_data['payment_id'])
             );
-            Helper::log_debug('IPN - Notification checked, order: ' . $order->get_id() . ' checked and updated to approved (' . $status . ')');
+            Helper::log_info('IPN - Notification checked, order: ' . $order->get_id() . ' checked and updated to approved (' . $status . ')');
         } else if ($mp_data['status'] === 'in_process') {
             $status = Helper::get_option('status_payment_in_process', 'wc-pending');
             $order->update_status(
                 $status,
-                sprintf(__('Mercadopago Gateway - Payment: %s is pending ', \WCMPGatewayCheckout::DOMAIN_NAME), $mp_data['payment_id'])
+                sprintf(__('Mercadopago Gateway - Payment: %s is pending ', 'wc-mp-gateway-checkout'), $mp_data['payment_id'])
             );
-            Helper::log_debug('IPN - Notification checked, order: ' . $order->get_id() . ' checked and updated to in process (' . $status . ')');
+            Helper::log_info('IPN - Notification checked, order: ' . $order->get_id() . ' checked and updated to in process (' . $status . ')');
         } else if ($mp_data['status'] === 'rejected') {
             $status = Helper::get_option('status_payment_rejected', 'wc-failed');
             $reason = WC_MP_Gateway::handle_rejected_payment($mp_data['status_detail']);
             $order->update_status(
                 $status,
                 sprintf(
-                    __('Mercadopago Gateway - Payment: %s was rejected, Reason: ', \WCMPGatewayCheckout::DOMAIN_NAME),
+                    __('Mercadopago Gateway - Payment: %s was rejected. Reason: ', 'wc-mp-gateway-checkout'),
                     $mp_data['payment_id'],
                     $reason
                 )
             );
-            Helper::log_debug('IPN - Notification checked, order: ' . $order->get_id() . ' checked and updated to rejected (' . $status . '). Reason: ' . $reason);
+            Helper::log_info('IPN - Notification checked, order: ' . $order->get_id() . ' checked and updated to rejected (' . $status . '). Reason: ' . $reason);
         } else {
             Helper::log_error('Tried to updated order from IPN with unknown status: ' . $mp_data['status']);
         }

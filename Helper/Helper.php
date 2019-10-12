@@ -15,4 +15,9 @@ class Helper
             $object->$key = $value;
         return $object;
     }
+
+    public static function get_main_folder_url()
+    {
+        return plugin_dir_url(\WCMPGatewayCheckout::MAIN_FILE);
+    }
 }

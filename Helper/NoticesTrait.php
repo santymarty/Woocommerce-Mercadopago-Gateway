@@ -8,26 +8,26 @@ trait NoticesTrait
     {
         $notices_types = ['error', 'success', 'info'];
         foreach ($notices_types as $type) {
-            $notices = get_transient('wcmp-gateway-checkout-' . $type . '-notices');
+            $notices = get_transient('wc-mp-gateway-checkout-' . $type . '-notices');
             if (empty($notices)) continue;
             foreach ($notices as $notice) {
                 echo '<div class="notice notice-' . $type . ' is-dismissible">';
                 echo '<p>' . $notice . '</p>';
                 echo '</div>';
             }
-            delete_transient('wcmp-gateway-checkout-' . $type . '-notices');
+            delete_transient('wc-mp-gateway-checkout-' . $type . '-notices');
         }
     }
 
     private static function add_notice(string $type, string $msg, bool $do_action = false)
     {
-        $notices = get_transient('wcmp-gateway-checkout-' . $type . '-notices');
+        $notices = get_transient('wc-mp-gateway-checkout-' . $type . '-notices');
         if (!empty($notices)) {
             $notices[] = $msg;
         } else {
             $notices = [$msg];
         }
-        set_transient('wcmp-gateway-checkout-' . $type . '-notices', $notices, 60);
+        set_transient('wc-mp-gateway-checkout-' . $type . '-notices', $notices, 60);
         if ($do_action) do_action('admin_notices');
     }
 

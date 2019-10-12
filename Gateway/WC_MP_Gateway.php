@@ -29,7 +29,7 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
     {
         $this->id = 'wc_mp_gateway';
         $this->method_title = 'MercadoPago Gateway Checkout';
-        $this->method_description = __('Let your customers pay with MercadoPago and MercadoPago Gateway using the innovative Gateway Checkout', \WCMPGatewayCheckout::DOMAIN_NAME);
+        $this->method_description = __('Let your customers pay with MercadoPago Gateway', 'wc-mp-gateway-checkout');
         $this->description = $this->get_option('description');
         $this->title = $this->get_option('title');
         $this->enabled = $this->get_option('enabled');
@@ -54,33 +54,42 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
             'title' => [
                 'title' => __('Title', 'woocommerce'),
                 'type' => 'text',
-                'description' => __('This controls the title which the customer sees during checkout.', \WCMPGatewayCheckout::DOMAIN_NAME),
-                'default' => __('MercadoPago', \WCMPGatewayCheckout::DOMAIN_NAME)
+                'description' => __('This controls the title which the customer sees during checkout.', 'wc-mp-gateway-checkout'),
+                'default' => __('MercadoPago', 'wc-mp-gateway-checkout')
             ],
             'description' => [
-                'title' => __('Message in checkout', \WCMPGatewayCheckout::DOMAIN_NAME),
+                'title' => __('Message in checkout', 'wc-mp-gateway-checkout'),
                 'type' => 'textarea',
-                'description' => __('Set your custom message to be shown in the checkout when the customer selects this payment method. Can be empty', \WCMPGatewayCheckout::DOMAIN_NAME),
-                'default' => __('Pay with Mercadopago, up to 12 installments with all credit cards', \WCMPGatewayCheckout::DOMAIN_NAME)
+                'description' => __('Set your custom message to be shown in the checkout when the customer selects this payment method. Can be empty', 'wc-mp-gateway-checkout'),
+                'default' => __('Pay with Mercadopago, up to 12 installments with all credit cards', 'wc-mp-gateway-checkout')
             ]
         ];
     }
 
     public function form()
     {
-        wp_enqueue_script('wcmp-gateway-mp-sdk');
-        wp_enqueue_script('wcmp-gateway-cc-card');
-        wp_enqueue_script('wcmp-gateway-cc-card-form');
-        wp_localize_script('wcmp-gateway-cc-card-form', 'wc_mp_gateway_settings', [
+        wp_enqueue_script('wc-mp-gateway-mp-sdk');
+        wp_enqueue_script('wc-mp-gateway-cc-card');
+        wp_enqueue_script('wc-mp-gateway-cc-card-form');
+        wp_localize_script('wc-mp-gateway-cc-card-form', 'wc_mp_gateway_settings', [
             'public_key' => Helper::get_option('public_key'),
-            'cart_amount' => WC()->cart->get_total('edit')
+            'cart_amount' => WC()->cart->get_total('edit'),
+            'card_size' => (Helper::get_option('card_size') + 30)
         ]);
-        wp_enqueue_style('wcmp-gateway-grid');
+        wp_enqueue_style('wc-mp-gateway-grid');
         ?>
-        <div class="wcmp-gateway-form-card"></div>
-        <div class="wcmp-gateway-form wcmp-gateway-wrapper">
-            <input placeholder="Card number" type="text" name="ccNumber" autocomplete="cc-number">
-            <input placeholder="Full name" type="text" name="ccName" autocomplete="cc-name" data-checkout="cardholderName">
+        <div class="wc-mp-gateway-form-card"></div>
+        <div class="wc-mp-gateway-form wc-mp-gateway-wrapper">
+            <div class="row">
+                <div class="col l12">
+                    <input placeholder="Número de Tarjeta" type="text" name="ccNumber" autocomplete="cc-number">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col l12">
+                    <input placeholder="Nombre y Apellido" type="text" name="ccName" autocomplete="cc-name" data-checkout="cardholderName">
+                </div>
+            </div>
             <div class="row">
                 <div class="col l6">
                     <input placeholder="MM/YY" type="text" name="ccExpiry" autocomplete="cc-exp">
@@ -96,12 +105,16 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
                     </select>
                 </div>
                 <div class="col l7">
-                    <input type="text" name="docNumber" data-checkout="docNumber" placeholder="Document Number" />
+                    <input type="text" name="docNumber" data-checkout="docNumber" placeholder="Nro. de Documento" />
                 </div>
             </div>
-            <select name="installments" id="installments">
-                <option disabled selected>Seleccionar Cuotas</option>
-            </select>
+            <div class="row">
+                <div class="col l12">
+                    <select name="installments" id="installments">
+                        <option disabled selected>Seleccionar Cuotas</option>
+                    </select>
+                </div>
+            </div>
             <input type="hidden" name="hiddenCcNumber" data-checkout="cardNumber">
             <input type="hidden" name="hiddenExpiryMonth" data-checkout="cardExpirationMonth">
             <input type="hidden" name="hiddenExpiryYear" data-checkout="cardExpirationYear">
@@ -135,7 +148,7 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
 
         // If our payment fails for whatever reason, catch it
         if (empty($mp_preference->status)) {
-            wc_add_notice(__('There was an error in the payment, please try again', \WCMPGatewayCheckout::DOMAIN_NAME), 'error');
+            wc_add_notice(__('There was an error in the payment, please try again', 'wc-mp-gateway-checkout'), 'error');
             return false;
         }
 
@@ -155,7 +168,7 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
             wc_add_notice($msg, 'error');
             return false;
         } else {
-            wc_add_notice(__('There was an error in the payment, please try again', \WCMPGatewayCheckout::DOMAIN_NAME), 'error');
+            wc_add_notice(__('There was an error in the payment, please try again', 'wc-mp-gateway-checkout'), 'error');
             return false;
         }
         return [

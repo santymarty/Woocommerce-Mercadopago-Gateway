@@ -1014,7 +1014,7 @@ var card =
 	      type: 'hipercard',
 	      pattern: /^(384100|384140|384160|606282|637095|637568|60(?!11))/,
 	      format: defaultFormat,
-	      length: [14, 15, 16],
+	      length: [14, 15, 16, 17, 18, 19],
 	      cvcLength: [3],
 	      luhn: true
 	    }, {
@@ -1042,14 +1042,14 @@ var card =
 	      type: 'laser',
 	      pattern: /^(6706|6771|6709)/,
 	      format: defaultFormat,
-	      length: [16],
+	      length: [16, 17, 18, 19],
 	      cvcLength: [3],
 	      luhn: true
 	    }, {
 	      type: 'maestro',
 	      pattern: /^(5018|5020|5038|6304|6703|6708|6759|676[1-3])/,
 	      format: defaultFormat,
-	      length: [12, 13, 14, 15, 16],
+	      length: [12, 13, 14, 15, 16, 17, 18, 19],
 	      cvcLength: [3],
 	      luhn: true
 	    }, {
@@ -1063,7 +1063,7 @@ var card =
 	      type: 'unionpay',
 	      pattern: /^62/,
 	      format: defaultFormat,
-	      length: [16],
+	      length: [16, 17, 18, 19],
 	      cvcLength: [3],
 	      luhn: false
 	    }, {
@@ -1084,7 +1084,7 @@ var card =
 	      type: 'visa',
 	      pattern: /^4/,
 	      format: defaultFormat,
-	      length: [13, 16],
+	      length: [13, 16, 19],
 	      cvcLength: [3],
 	      luhn: true
 	    }

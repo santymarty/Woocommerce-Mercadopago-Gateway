@@ -3,7 +3,7 @@
 ((settings, MP, $) => {
 
     let oldBin;
-    const MP_Form = '.wcmp-gateway-form';
+    const MP_Form = '.wc-mp-gateway-form';
 
     MP.setPublishableKey(settings.public_key);
 
@@ -64,13 +64,14 @@
             };
             new Card({
                 form: this.elems.form,
-                container: '.wcmp-gateway-form-card',
+                container: '.wc-mp-gateway-form-card',
                 formSelectors: {
                     numberInput: 'input[name="ccNumber"]',
                     expiryInput: 'input[name="ccExpiry"]',
                     cvcInput: 'input[name="ccCvc"]',
                     nameInput: 'input[name="ccName"]'
                 },
+                width: settings.card_size
             });
             this.elems.ccNumber.addEventListener('keyup', this.handleNewccNumber.bind(this));
             this.elems.ccExpiry.addEventListener('keyup', this.handleExpiryDateChange.bind(this));

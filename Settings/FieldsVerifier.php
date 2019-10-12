@@ -16,7 +16,7 @@ class FieldsVerifier
             $value = filter_var($value, FILTER_SANITIZE_STRING);
             $value = strip_tags($value);
             if (!empty($value)) {
-                update_option(\WCMPGatewayCheckout::DOMAIN_NAME . '-' . $setting['slug'], $value);
+                update_option('wc-mp-gateway-checkout-' . $setting['slug'], $value);
                 $saved = true;
             }
         }

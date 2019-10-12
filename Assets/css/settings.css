@@ -22,3 +22,16 @@ input[type=checkbox], input[type=color], input[type=date], input[type=datetime-l
     box-sizing: border-box;
     width: 30%;
 }
+
+.field-description {
+    display: block;
+    color: #888787;
+    padding-left: 5px;
+    padding-top: 5px;
+    width: 30%;
+}
+
+.field-unit {
+    margin-left: 5px;
+    color: #888787;
+}

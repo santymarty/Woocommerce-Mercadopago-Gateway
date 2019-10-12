@@ -1,4 +1,4 @@
-.wcmp-gateway-wrapper .row {
+.wc-mp-gateway-wrapper .row {
     padding: 0;
     margin: 0 -10px!important;
     width: auto;
@@ -8,135 +8,140 @@
     -ms-flex-flow: row wrap
 }
 
-.wcmp-gateway-wrapper .col {
+.wc-mp-gateway-wrapper input, .wc-mp-gateway-wrapper select {
+    width: 100%;
+    height: 30px;
+}
+
+.wc-mp-gateway-wrapper .col {
     position: relative;
     margin: 0;
     padding: 0 10px!important;
     width: 100%
 }
 
-.wcmp-gateway-wrapper .s1 {
+.wc-mp-gateway-wrapper .s1 {
     max-width: 8.33333%
 }
 
-.wcmp-gateway-wrapper .s2 {
+.wc-mp-gateway-wrapper .s2 {
     max-width: 16.66667%
 }
 
-.wcmp-gateway-wrapper .s3 {
+.wc-mp-gateway-wrapper .s3 {
     max-width: 25%
 }
 
-.wcmp-gateway-wrapper .s4 {
+.wc-mp-gateway-wrapper .s4 {
     max-width: 33.33333%
 }
 
-.wcmp-gateway-wrapper .s5 {
+.wc-mp-gateway-wrapper .s5 {
     max-width: 41.66667%
 }
 
-.wcmp-gateway-wrapper .s6 {
+.wc-mp-gateway-wrapper .s6 {
     max-width: 50%
 }
 
-.wcmp-gateway-wrapper .s7 {
+.wc-mp-gateway-wrapper .s7 {
     max-width: 58.33333%
 }
 
-.wcmp-gateway-wrapper .s8 {
+.wc-mp-gateway-wrapper .s8 {
     max-width: 66.66667%
 }
 
-.wcmp-gateway-wrapper .s9 {
+.wc-mp-gateway-wrapper .s9 {
     max-width: 75%
 }
 
-.wcmp-gateway-wrapper .s10 {
+.wc-mp-gateway-wrapper .s10 {
     max-width: 83.33333%
 }
 
-.wcmp-gateway-wrapper .s11 {
+.wc-mp-gateway-wrapper .s11 {
     max-width: 91.66667%
 }
 
-.wcmp-gateway-wrapper .s12 {
+.wc-mp-gateway-wrapper .s12 {
     max-width: 100%
 }
 
 @media screen and (min-width: 550px) {
-    .wcmp-gateway-wrapper .m1 {
+    .wc-mp-gateway-wrapper .m1 {
         max-width: 8.33333%
     }
-    .wcmp-gateway-wrapper .m2 {
+    .wc-mp-gateway-wrapper .m2 {
         max-width: 16.66667%
     }
-    .wcmp-gateway-wrapper .m3 {
+    .wc-mp-gateway-wrapper .m3 {
         max-width: 25%
     }
-    .wcmp-gateway-wrapper .m4 {
+    .wc-mp-gateway-wrapper .m4 {
         max-width: 33.33333%
     }
-    .wcmp-gateway-wrapper .m5 {
+    .wc-mp-gateway-wrapper .m5 {
         max-width: 41.66667%
     }
-    .wcmp-gateway-wrapper .m6 {
+    .wc-mp-gateway-wrapper .m6 {
         max-width: 50%
     }
-    .wcmp-gateway-wrapper .m7 {
+    .wc-mp-gateway-wrapper .m7 {
         max-width: 58.33333%
     }
-    .wcmp-gateway-wrapper .m8 {
+    .wc-mp-gateway-wrapper .m8 {
         max-width: 66.66667%
     }
-    .wcmp-gateway-wrapper .m9 {
+    .wc-mp-gateway-wrapper .m9 {
         max-width: 75%
     }
-    .wcmp-gateway-wrapper .m10 {
+    .wc-mp-gateway-wrapper .m10 {
         max-width: 83.33333%
     }
-    .wcmp-gateway-wrapper .m11 {
+    .wc-mp-gateway-wrapper .m11 {
         max-width: 91.66667%
     }
-    .wcmp-gateway-wrapper .m12 {
+    .wc-mp-gateway-wrapper .m12 {
         max-width: 100%
     }
 }
 
 @media screen and (min-width: 850px) {
-    .wcmp-gateway-wrapper .l1 {
+    .wc-mp-gateway-wrapper .l1 {
         max-width: 8.33333%
     }
-    .wcmp-gateway-wrapper .l2 {
+    .wc-mp-gateway-wrapper .l2 {
         max-width: 16.66667%
     }
-    .wcmp-gateway-wrapper .l3 {
+    .wc-mp-gateway-wrapper .l3 {
         max-width: 25%
     }
-    .wcmp-gateway-wrapper .l4 {
+    .wc-mp-gateway-wrapper .l4 {
         max-width: 33.33333%
     }
-    .wcmp-gateway-wrapper .l5 {
+    .wc-mp-gateway-wrapper .l5 {
         max-width: 41.66667%
     }
-    .wcmp-gateway-wrapper .l6 {
+    .wc-mp-gateway-wrapper .l6 {
         max-width: 50%
     }
-    .wcmp-gateway-wrapper .l7 {
+    .wc-mp-gateway-wrapper .l7 {
         max-width: 58.33333%
     }
-    .wcmp-gateway-wrapper .l8 {
+    .wc-mp-gateway-wrapper .l8 {
         max-width: 66.66667%
     }
-    .wcmp-gateway-wrapper .l9 {
+    .wc-mp-gateway-wrapper .l9 {
         max-width: 75%
     }
-    .wcmp-gateway-wrapper .l10 {
+    .wc-mp-gateway-wrapper .l10 {
         max-width: 83.33333%
     }
-    .wcmp-gateway-wrapper .l11 {
+    .wc-mp-gateway-wrapper .l11 {
         max-width: 91.66667%
     }
-    .wcmp-gateway-wrapper .l12 {
+    .wc-mp-gateway-wrapper .l12 {
         max-width: 100%
     }
 }
