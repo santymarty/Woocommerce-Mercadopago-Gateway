@@ -1,29 +1,40 @@
 <?php
 
-use Macr1408\MPGatewayCheckout\Helper\Helper;
+use CRPlugins\MPGatewayCheckout\Helper\Helper;
 
 /**
  * Plugin Name: WooCommerce Mercadopago Gateway Checkout
  * Plugin URI: https://macr1408.github.io/
  * Description: Integration between Mercadopago Gateway and WooCommerce, using custom checkout.
  * Version: 1.0
- * Author: Macr1408
+ * Requires PHP: 7.0
+ * Author: CRPlugins
  * Author URI: https://macr1408.github.io/
  * Text Domain: wc-mp-gateway-checkout
  * Domain Path: /i18n/languages/
+ * WC requires at least: 3.3
+ * WC tested up to: 3.6
  */
 
 defined('ABSPATH') || exit;
 
 add_action('plugins_loaded', ['WCMPGatewayCheckout', 'init']);
-add_action('wp_enqueue_scripts', ['WCMPGatewayCheckout', 'load_scripts']);
+add_action('wp_enqueue_scripts', ['WCMPGatewayCheckout', 'register_scripts']);
 
+/**
+ * Plugin's base Class
+ */
 class WCMPGatewayCheckout
 {
     const PLUGIN_NAME = 'WooCommerce Mercadopago Gateway Checkout';
     const MAIN_FILE = __FILE__;
     const MAIN_DIR = __DIR__;
 
+    /**
+     * Checks system requirements
+     *
+     * @return bool
+     */
     public static function check_system()
     {
         require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -45,6 +56,11 @@ class WCMPGatewayCheckout
         return true;
     }
 
+    /**
+     * Check the components required for the plugin to work (PHP, WordPress and WooCommerce)
+     *
+     * @return array
+     */
     private static function check_components()
     {
 
@@ -53,16 +69,21 @@ class WCMPGatewayCheckout
         if (version_compare(PHP_VERSION, '7.0', '<')) {
             $flag = 'PHP';
             $version = '7.0';
-        } else if (version_compare($wp_version, '4.9', '<')) {
+        } elseif (version_compare($wp_version, '4.9', '<')) {
             $flag = 'WordPress';
             $version = '4.9';
-        } else if (!defined('WC_VERSION') || version_compare(WC_VERSION, '3.3', '<')) {
+        } elseif (!defined('WC_VERSION') || version_compare(WC_VERSION, '3.3', '<')) {
             $flag = 'WooCommerce';
             $version = '3.3';
         }
         return ['flag' => $flag, 'version' => $version];
     }
 
+    /**
+     * Inits our plugin
+     *
+     * @return void
+     */
     public static function init()
     {
         if (!self::check_system()) return false;;
@@ -93,7 +114,12 @@ class WCMPGatewayCheckout
         self::load_textdomain();
     }
 
-    public static function load_scripts()
+    /**
+     * Registers all scripts to be loaded laters
+     *
+     * @return void
+     */
+    public static function register_scripts()
     {
         wp_register_script('wc-mp-gateway-cc-card', plugin_dir_url(__FILE__) . 'Assets/js/card.min.js');
         wp_register_script('wc-mp-gateway-cc-card-form', plugin_dir_url(__FILE__) . 'Assets/js/checkout-form.min.js', ['jquery']);
@@ -102,12 +128,23 @@ class WCMPGatewayCheckout
         wp_register_style('wc-mp-gateway-settings-css', plugin_dir_url(__FILE__) . 'Assets/css/settings.min.css');
     }
 
+    /**
+     * Create a link to the settings page, in the plugins page
+     *
+     * @param array $links
+     * @return array
+     */
     public static function create_settings_link(array $links)
     {
         $links[] = '<a href="' . esc_url(get_admin_url(null, 'options-general.php?page=wc-mp-gateway-checkout-settings')) . '">' . __('Settings', 'wc-mp-gateway-checkout') . '</a>';
         return $links;
     }
 
+    /**
+     * Loads the plugin text domain
+     *
+     * @return void
+     */
     public static function load_textdomain()
     {
         load_plugin_textdomain('wc-mp-gateway-checkout', false, basename(dirname(__FILE__)) . '/i18n/languages');

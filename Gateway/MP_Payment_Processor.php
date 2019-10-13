@@ -1,14 +1,22 @@
 <?php
 
-namespace Macr1408\MPGatewayCheckout\Gateway;
+namespace CRPlugins\MPGatewayCheckout\Gateway;
 
-use Macr1408\MPGatewayCheckout\Helper\Helper;
+use CRPlugins\MPGatewayCheckout\Helper\Helper;
 
-
+/**
+ * A wrapper for processing payments with MercadoPago using their PHP Sdk
+ */
 class MP_Payment_Processor
 {
     private $order, $token, $installments, $payment_method_id, $installments_type;
 
+    /**
+     * Default constructor
+     *
+     * @param \WC_Order $order
+     * @param array $extradata
+     */
     public function __construct(\WC_Order $order, array $extradata)
     {
         $this->order = $order;
@@ -18,6 +26,11 @@ class MP_Payment_Processor
         $this->installments_type = $extradata['installments_type'];
     }
 
+    /**
+     * Creates a MercadoPago Payment using a WooCommerce Order
+     *
+     * @return \MercadoPago\Payment
+     */
     public function create()
     {
         $payment = new \MercadoPago\Payment();
@@ -40,6 +53,11 @@ class MP_Payment_Processor
         return $payment;
     }
 
+    /**
+     * Gets an object containing all the items of an order
+     *
+     * @return mixed
+     */
     protected function get_items()
     {
         $items = [];
@@ -61,6 +79,11 @@ class MP_Payment_Processor
         return $items;
     }
 
+    /**
+     * Gets an object containing all the payer information of an order
+     *
+     * @return mixed
+     */
     protected function get_payer()
     {
         $address = [
@@ -80,6 +103,11 @@ class MP_Payment_Processor
         return $payer;
     }
 
+    /**
+     * Gets an object containing a "base"  of the payer information of an order
+     *
+     * @return mixed
+     */
     protected function get_payer_main()
     {
         $payer = $this->get_payer();
@@ -87,6 +115,11 @@ class MP_Payment_Processor
         return Helper::convert_array_into_object($payer);
     }
 
+    /**
+     * Gets an object containing all the payer extra information of an order
+     *
+     * @return mixed
+     */
     protected function get_payer_extra()
     {
         $payer = $this->get_payer();
@@ -96,6 +129,11 @@ class MP_Payment_Processor
         return Helper::convert_array_into_object($payer);
     }
 
+    /**
+     * Gets an object containing all the shipment information of an order
+     *
+     * @return mixed
+     */
     protected function get_shipment()
     {
         $shipment = [
@@ -111,6 +149,14 @@ class MP_Payment_Processor
         return Helper::convert_array_into_object($shipment);
     }
 
+    /**
+     * Merges all the aditional info into one single object
+     *
+     * @param mixed $payer
+     * @param mixed $items
+     * @param mixed $shipment
+     * @return mixed
+     */
     protected function get_additional_info($payer, $items, $shipment)
     {
         $additional_info = [
@@ -121,16 +167,32 @@ class MP_Payment_Processor
         return Helper::convert_array_into_object($additional_info);
     }
 
+    /**
+     * gets external_reference option
+     *
+     * @return string
+     */
     protected function get_external_reference()
     {
         return Helper::get_option('external_reference', 'WC-') . $this->order->get_id();
     }
 
+    /**
+     * Gets binary_mode option
+     *
+     * @return bool
+     */
     protected function get_binary_mode()
     {
-        return Helper::get_option('binary_mode', true);
+        $bm = Helper::get_option('binary_mode', true);
+        return filter_var($bm, FILTER_VALIDATE_BOOLEAN);
     }
 
+    /**
+     * Gets notification url for the store
+     *
+     * @return string
+     */
     protected function get_notification_url()
     {
         return get_site_url(null, '/wc-api/mp-gateway-ipn');

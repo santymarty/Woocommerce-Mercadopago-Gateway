@@ -1,6 +1,6 @@
 <?php
 
-namespace Macr1408\MPGatewayCheckout\Helper;
+namespace CRPlugins\MPGatewayCheckout\Helper;
 
 trait LoggerTrait
 {
@@ -8,8 +8,9 @@ trait LoggerTrait
 
     public static function init()
     {
-        if (function_exists('wc_get_logger'))
+        if (function_exists('wc_get_logger')) {
             if (!isset(self::$logger)) self::$logger = wc_get_logger();
+        }
     }
 
     public static function log_info($msg)

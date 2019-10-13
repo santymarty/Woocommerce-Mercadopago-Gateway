@@ -1,0 +1,159 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Mercadopago Gateway Checkout\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-10-12 02:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.3.0; wp-5.2.3"
+
+#: woocommerce-mercadopago-gateway.php:36
+#, php-format
+msgid ""
+"<strong>WooCommerce Mercadopago Gateway Checkout</strong> Requires at least "
+"%s version %s or greater.</p>"
+msgstr ""
+
+#: Settings/Main.php:84
+msgid "Configuration"
+msgstr ""
+
+#. URI of the plugin
+#. Author URI of the plugin
+msgid "https://macr1408.github.io/"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"Integration between Mercadopago Gateway and WooCommerce, using custom "
+"checkout."
+msgstr ""
+
+#: Gateway/WC_MP_Gateway.php:32
+msgid "Let your customers pay with MercadoPago Gateway"
+msgstr ""
+
+#. Author of the plugin
+msgid "Macr1408"
+msgstr ""
+
+#: Gateway/WC_MP_Gateway.php:58
+msgid "MercadoPago"
+msgstr ""
+
+#: Gateway/IPNProcessor.php:83
+#, php-format
+msgid "Mercadopago Gateway - Payment: %s is pending "
+msgstr ""
+
+#: Gateway/IPNProcessor.php:76
+#, php-format
+msgid "Mercadopago Gateway - Payment: %s was approved "
+msgstr ""
+
+#: Gateway/IPNProcessor.php:92
+#, php-format
+msgid "Mercadopago Gateway - Payment: %s was rejected. Reason: "
+msgstr ""
+
+#: Gateway/WC_MP_Gateway.php:61
+msgid "Message in checkout"
+msgstr ""
+
+#: Gateway/WC_MP_Gateway.php:64
+msgid "Pay with Mercadopago, up to 12 installments with all credit cards"
+msgstr ""
+
+#: Settings/Main.php:145
+msgid "Save"
+msgstr ""
+
+#: Settings/Main.php:37
+msgid "Set MercadoPago in binary mode"
+msgstr ""
+
+#: Gateway/WC_MP_Gateway.php:63
+msgid ""
+"Set your custom message to be shown in the checkout when the customer "
+"selects this payment method. Can be empty"
+msgstr ""
+
+#: woocommerce-mercadopago-gateway.php:103
+msgid "Settings"
+msgstr ""
+
+#: Settings/Main.php:134
+msgid "Settings saved"
+msgstr ""
+
+#: Settings/Main.php:52
+msgid "Status when the payment is approved"
+msgstr ""
+
+#: Settings/Main.php:60
+msgid "Status when the payment is in process"
+msgstr ""
+
+#: Settings/Main.php:68
+msgid "Status when the payment is rejected"
+msgstr ""
+
+#: Settings/Main.php:45
+msgid "Store prefix"
+msgstr ""
+
+#: Gateway/WC_MP_Gateway.php:138 Gateway/WC_MP_Gateway.php:158
+msgid "There was an error in the payment, please try again"
+msgstr ""
+
+#: Gateway/WC_MP_Gateway.php:57
+msgid "This controls the title which the customer sees during checkout."
+msgstr ""
+
+#: Settings/Main.php:48
+msgid "This is the prefix of the order receipt that your customers will see"
+msgstr ""
+
+#: Settings/Main.php:55
+msgid "This is the status the order will have when the payment is approved"
+msgstr ""
+
+#: Settings/Main.php:63
+msgid "This is the status the order will have when the payment is in process"
+msgstr ""
+
+#: Settings/Main.php:71
+msgid "This is the status the order will have when the payment is rejected"
+msgstr ""
+
+#: Settings/Main.php:40
+msgid ""
+"When this is activated, the payment goes approved or failed, it can't go to "
+"the pending state"
+msgstr ""
+
+#. Name of the plugin
+msgid "WooCommerce Mercadopago Gateway Checkout"
+msgstr ""
+
+#: woocommerce-mercadopago-gateway.php:43
+msgid ""
+"WooCommerce must be active before using <strong>WooCommerce Mercadopago "
+"Gateway Checkout</strong>"
+msgstr ""
+
+#: Settings/Main.php:34
+msgid "Your MercadoPago Access Token"
+msgstr ""
+
+#: Settings/Main.php:28
+msgid "Your MercadoPago Public Key"
+msgstr ""

@@ -1,6 +1,6 @@
 <?php
 
-namespace Macr1408\MPGatewayCheckout\Settings\Sections;
+namespace CRPlugins\MPGatewayCheckout\Settings\Sections;
 
 interface SectionInterface
 {

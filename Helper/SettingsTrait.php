@@ -1,6 +1,6 @@
 <?php
 
-namespace Macr1408\MPGatewayCheckout\Helper;
+namespace CRPlugins\MPGatewayCheckout\Helper;
 
 trait SettingsTrait
 {

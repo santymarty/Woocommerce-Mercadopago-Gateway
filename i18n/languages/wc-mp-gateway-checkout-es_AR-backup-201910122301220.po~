@@ -170,7 +170,7 @@ msgid ""
 "If the card doesn't show properly in your checkout, you can adjust its size "
 "here"
 msgstr ""
-"Si la tarjeta no se muestra correctamente en tu checkout, podés ajustar el "
+"Si la tarjeta no se muestra correctamente en tu checkout, puedes ajustar el "
 "tamaño aquí"
 
 #: Settings/Sections/MpSection.php:13
@@ -246,5 +246,5 @@ msgid "https://macr1408.github.io/"
 msgstr "https://macr1408.github.io/"
 
 #. Author of the plugin
-msgid "CRPlugins"
-msgstr "CRPlugins"
+msgid "Macr1408"
+msgstr "Macr1408"

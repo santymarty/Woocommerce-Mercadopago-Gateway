@@ -1,11 +1,20 @@
 <?php
 
-namespace Macr1408\MPGatewayCheckout\Settings;
+namespace CRPlugins\MPGatewayCheckout\Settings;
 
 defined('ABSPATH') || exit;
 
+/**
+ * Class which will handle our settings being saved
+ */
 class FieldsVerifier
 {
+    /**
+     * Saves all our fields, and sanitizes them.
+     *
+     * @param array $post_data
+     * @return bool
+     */
     public static function save_settings(array $post_data)
     {
         $saved = false;

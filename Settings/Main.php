@@ -1,15 +1,23 @@
 <?php
 
-namespace Macr1408\MPGatewayCheckout\Settings;
+namespace CRPlugins\MPGatewayCheckout\Settings;
 
-use Macr1408\MPGatewayCheckout\Helper\Helper;
-use Macr1408\MPGatewayCheckout\Settings\Sections\FrontendSection;
-use Macr1408\MPGatewayCheckout\Settings\Sections\MpSection;
+use CRPlugins\MPGatewayCheckout\Helper\Helper;
+use CRPlugins\MPGatewayCheckout\Settings\Sections\FrontendSection;
+use CRPlugins\MPGatewayCheckout\Settings\Sections\MpSection;
 
 defined('ABSPATH') || exit;
 
+/**
+ * A main class that holds all our settings logic
+ */
 class Main
 {
+    /**
+     * Gets all settings fields from all the settings sections
+     *
+     * @return array
+     */
     public static function get_settings_fields()
     {
         $mp_settings_fields = MpSection::get_fields();
@@ -17,15 +25,26 @@ class Main
         return array_merge($mp_settings_fields, $frontend_settings_fields);
     }
 
+    /**
+     * Gets all settings (options registered with their values)
+     *
+     * @return array
+     */
     public static function get_all_settings()
     {
         $settings = self::get_settings_fields();
         $data = [];
-        foreach ($settings as $setting)
+        foreach ($settings as $setting) {
             $data[$setting['slug']] = Helper::get_option($setting['slug']);
+        }
         return $data;
     }
 
+    /**
+     * Registers the sections and render them
+     *
+     * @return void
+     */
     public static function init_settings()
     {
         register_setting('wc-mp-gateway-checkout', 'wc-mp-gateway-checkout_options');
@@ -36,12 +55,24 @@ class Main
         $section->add();
     }
 
+    /**
+     * Adds our assets into our settings page
+     *
+     * @param string $hook
+     * @return void
+     */
     public static function add_assets_files(string $hook)
     {
-        if ($hook === 'settings_page_wc-mp-gateway-checkout-settings')
+        if ($hook === 'settings_page_wc-mp-gateway-checkout-settings') {
             wp_enqueue_style('wc-mp-gateway-settings-css', Helper::get_main_folder_url() . 'Assets/css/settings.css');
+        }
     }
 
+    /**
+     * Creates a setting option in the WordPress Sidebar
+     *
+     * @return void
+     */
     public static function create_menu_option()
     {
         add_options_page(
@@ -53,19 +84,27 @@ class Main
         );
     }
 
+    /**
+     * Displays the settings pages
+     *
+     * @return void
+     */
     public static function settings_page_content()
     {
 
-        if (!current_user_can('manage_options'))
+        if (!is_admin() || !current_user_can('manage_options')) {
             die('what are you doing here?');
+        }
 
         $nonce = $_REQUEST['_wpnonce'] ?? null;
-        if (!empty($_POST) && $nonce && !wp_verify_nonce($nonce, 'wc-mp-gateway-checkout-settings-options'))
+        if (!empty($_POST) && $nonce && !wp_verify_nonce($nonce, 'wc-mp-gateway-checkout-settings-options')) {
             die('what are you doing here?');
+        }
 
         $settings_saved = FieldsVerifier::save_settings($_POST);
-        if ($settings_saved)
+        if ($settings_saved) {
             Helper::add_success(__('Settings saved', 'wc-mp-gateway-checkout'), true);
+        }
 
         $logo_url = Helper::get_main_folder_url() . 'Assets/img/mercadopago-logo.png';
         ?>

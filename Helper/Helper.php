@@ -1,6 +1,6 @@
 <?php
 
-namespace Macr1408\MPGatewayCheckout\Helper;
+namespace CRPlugins\MPGatewayCheckout\Helper;
 
 class Helper
 {
@@ -11,8 +11,9 @@ class Helper
     public static function convert_array_into_object(array $array)
     {
         $object = new \stdClass();
-        foreach ($array as $key => $value)
+        foreach ($array as $key => $value) {
             $object->$key = $value;
+        }
         return $object;
     }
 

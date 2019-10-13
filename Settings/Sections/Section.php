@@ -1,18 +1,31 @@
 <?php
 
-namespace Macr1408\MPGatewayCheckout\Settings\Sections;
+namespace CRPlugins\MPGatewayCheckout\Settings\Sections;
 
-use Macr1408\MPGatewayCheckout\Settings\FieldFactory;
+use CRPlugins\MPGatewayCheckout\Settings\FieldFactory;
 
+/**
+ * Base Section class
+ */
 class Section
 {
     private $data = [];
 
+    /**
+     * Default constructor
+     *
+     * @param array $data
+     */
     public function __construct(array $data)
     {
         $this->data = $data;
     }
 
+    /**
+     * Adds the section itself into the settings page
+     *
+     * @return void
+     */
     public function add()
     {
         add_settings_section(

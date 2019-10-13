@@ -1,8 +1,8 @@
 <?php
 
-namespace Macr1408\MPGatewayCheckout\Settings\Fields;
+namespace CRPlugins\MPGatewayCheckout\Settings\Fields;
 
-use Macr1408\MPGatewayCheckout\Settings\FieldsPrinter;
+use CRPlugins\MPGatewayCheckout\Settings\FieldsPrinter;
 
 class Field implements FieldInterface
 {

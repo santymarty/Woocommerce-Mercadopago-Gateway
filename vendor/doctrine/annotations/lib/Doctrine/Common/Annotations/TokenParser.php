@@ -79,9 +79,10 @@ class TokenParser
     {
         for ($i = $this->pointer; $i < $this->numTokens; $i++) {
             $this->pointer++;
-            if ($this->tokens[$i][0] === T_WHITESPACE ||
-                $this->tokens[$i][0] === T_COMMENT ||
-                ($docCommentIsComment && $this->tokens[$i][0] === T_DOC_COMMENT)) {
+            if (
+                $this->tokens[$i][0] === T_WHITESPACE ||
+                $this->tokens[$i][0] === T_COMMENT || ($docCommentIsComment && $this->tokens[$i][0] === T_DOC_COMMENT)
+            ) {
 
                 continue;
             }
@@ -110,23 +111,23 @@ class TokenParser
             if (!$explicitAlias && $isNameToken) {
                 $class .= $token[1];
                 $alias = $token[1];
-            } else if ($explicitAlias && $isNameToken) {
+            } elseif ($explicitAlias && $isNameToken) {
                 $alias .= $token[1];
-            } else if ($token[0] === T_AS) {
+            } elseif ($token[0] === T_AS) {
                 $explicitAlias = true;
                 $alias = '';
-            } else if ($token === ',') {
+            } elseif ($token === ',') {
                 $statements[strtolower($alias)] = $groupRoot . $class;
                 $class = '';
                 $alias = '';
                 $explicitAlias = false;
-            } else if ($token === ';') {
+            } elseif ($token === ';') {
                 $statements[strtolower($alias)] = $groupRoot . $class;
                 break;
-            } else if ($token === '{' ) {
+            } elseif ($token === '{') {
                 $groupRoot = $class;
                 $class = '';
-            } else if ($token === '}' ) {
+            } elseif ($token === '}') {
                 continue;
             } else {
                 break;

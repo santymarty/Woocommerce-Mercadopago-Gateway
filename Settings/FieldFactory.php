@@ -1,11 +1,14 @@
 <?php
 
-namespace Macr1408\MPGatewayCheckout\Settings;
+namespace CRPlugins\MPGatewayCheckout\Settings;
 
-use Macr1408\MPGatewayCheckout\Settings\Fields\NumberField;
-use Macr1408\MPGatewayCheckout\Settings\Fields\SelectField;
-use Macr1408\MPGatewayCheckout\Settings\Fields\TextField;
+use CRPlugins\MPGatewayCheckout\Settings\Fields\NumberField;
+use CRPlugins\MPGatewayCheckout\Settings\Fields\SelectField;
+use CRPlugins\MPGatewayCheckout\Settings\Fields\TextField;
 
+/**
+ * This factory creates a FieldInterface
+ */
 class FieldFactory
 {
 

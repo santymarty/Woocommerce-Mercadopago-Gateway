@@ -1,26 +1,41 @@
 <?php
 
-namespace Macr1408\MPGatewayCheckout\Settings;
+namespace CRPlugins\MPGatewayCheckout\Settings;
 
-use Macr1408\MPGatewayCheckout\Settings\Fields\FieldInterface;
-use Macr1408\MPGatewayCheckout\Settings\Fields\NumberField;
-use Macr1408\MPGatewayCheckout\Settings\Fields\SelectField;
-use Macr1408\MPGatewayCheckout\Settings\Fields\TextField;
+use CRPlugins\MPGatewayCheckout\Settings\Fields\FieldInterface;
+use CRPlugins\MPGatewayCheckout\Settings\Fields\NumberField;
+use CRPlugins\MPGatewayCheckout\Settings\Fields\SelectField;
+use CRPlugins\MPGatewayCheckout\Settings\Fields\TextField;
 
+/**
+ * Class that will print all our settings fields
+ */
 class FieldsPrinter
 {
 
+    /**
+     * Pints a Field
+     *
+     * @param FieldInterface $field
+     * @return void
+     */
     public static function print(FieldInterface $field)
     {
         if ($field->get_type() === 'text') {
             self::print_text_input($field);
-        } else if ($field->get_type() === 'select') {
+        } elseif ($field->get_type() === 'select') {
             self::print_select_input($field);
-        } else if ($field->get_type() === 'number') {
+        } elseif ($field->get_type() === 'number') {
             self::print_number_input($field);
         }
     }
 
+    /**
+     * Prints a Textfield
+     *
+     * @param TextField $field
+     * @return void
+     */
     private static function print_text_input(TextField $field)
     {
         $previous_config = $field->get_value();
@@ -30,10 +45,17 @@ class FieldsPrinter
             $previous_config
         );
         $desc = $field->get_description();
-        if (!empty($desc))
+        if (!empty($desc)) {
             printf('<span class="field-description">%s<span>', $desc);
+        }
     }
 
+    /**
+     * Prints a NumberField
+     *
+     * @param NumberField $field
+     * @return void
+     */
     private static function print_number_input(NumberField $field)
     {
         $previous_config = $field->get_value();
@@ -43,13 +65,21 @@ class FieldsPrinter
             $previous_config
         );
         $unit = $field->get_unit();
-        if (!empty($unit))
+        if (!empty($unit)) {
             printf('<span class="field-unit">%s<span>', $unit);
+        }
         $desc = $field->get_description();
-        if (!empty($desc))
+        if (!empty($desc)) {
             printf('<span class="field-description">%s<span>', $desc);
+        }
     }
 
+    /**
+     * Prints a SelectField
+     *
+     * @param SelectField $field
+     * @return void
+     */
     private static function print_select_input(SelectField $field)
     {
         $previous_config = $field->get_value();
@@ -69,7 +99,8 @@ class FieldsPrinter
         }
         print('</select>');
         $desc = $field->get_description();
-        if (!empty($desc))
+        if (!empty($desc)) {
             printf('<span class="field-description">%s<span>', $desc);
+        }
     }
 }

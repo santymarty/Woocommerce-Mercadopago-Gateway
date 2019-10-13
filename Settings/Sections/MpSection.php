@@ -1,19 +1,30 @@
 <?php
 
-namespace Macr1408\MPGatewayCheckout\Settings\Sections;
+namespace CRPlugins\MPGatewayCheckout\Settings\Sections;
 
+/**
+ * MpSection class
+ */
 class MpSection extends Section implements SectionInterface
 {
     private $data = [
         'slug' => 'wc-mp-gateway-checkout-mp-config'
     ];
 
+    /**
+     * Default constructor
+     */
     public function __construct()
     {
         $this->data['name'] = __('MercadoPago Configuration', 'wc-mp-gateway-checkout');
         parent::__construct($this->data);
     }
 
+    /**
+     * Gets all our fields in this section
+     *
+     * @return array
+     */
     public static function get_fields()
     {
         $order_statuses = wc_get_order_statuses();

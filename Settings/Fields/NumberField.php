@@ -1,6 +1,6 @@
 <?php
 
-namespace Macr1408\MPGatewayCheckout\Settings\Fields;
+namespace CRPlugins\MPGatewayCheckout\Settings\Fields;
 
 final class NumberField extends Field
 {

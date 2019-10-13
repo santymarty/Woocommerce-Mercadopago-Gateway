@@ -1,20 +1,31 @@
 <?php
 
-namespace Macr1408\MPGatewayCheckout\Gateway;
+namespace CRPlugins\MPGatewayCheckout\Gateway;
 
-use Macr1408\MPGatewayCheckout\Helper\Helper;
-
+use CRPlugins\MPGatewayCheckout\Helper\Helper;
 
 defined('ABSPATH') || class_exists('\WC_Payment_Gateway') || exit;
 
+/**
+ * Adds our payment method to WooCommerce
+ *
+ * @param array $gateways
+ * @return array
+ */
 function wc_mp_gateway_add_method($gateways)
 {
-    $gateways[] = 'Macr1408\MPGatewayCheckout\Gateway\WC_MP_Gateway';
+    $gateways[] = 'CRPlugins\MPGatewayCheckout\Gateway\WC_MP_Gateway';
     return $gateways;
 }
 
+/**
+ * Our main payment method class
+ */
 class WC_MP_Gateway extends \WC_Payment_Gateway_CC
 {
+    /**
+     * Default constructor, loads settings and MercadoPago's SDK
+     */
     public function __construct()
     {
         require_once \WCMPGatewayCheckout::MAIN_DIR . '/vendor/autoload.php';
@@ -25,6 +36,11 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
         $this->setup_properties();
     }
 
+    /**
+     * Establishes default settings, and loads SDK and IPN Processor
+     *
+     * @return void
+     */
     private function setup_properties()
     {
         $this->id = 'wc_mp_gateway';
@@ -42,6 +58,11 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
         new IPNProcessor($access_token);
     }
 
+    /**
+     * Declares our instance configuration
+     *
+     * @return void
+     */
     public function init_form_fields()
     {
         $this->form_fields = [
@@ -66,6 +87,11 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
         ];
     }
 
+    /**
+     * Renders our form in the checkout page
+     *
+     * @return void
+     */
     public function form()
     {
         wp_enqueue_script('wc-mp-gateway-mp-sdk');
@@ -74,7 +100,7 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
         wp_localize_script('wc-mp-gateway-cc-card-form', 'wc_mp_gateway_settings', [
             'public_key' => Helper::get_option('public_key'),
             'cart_amount' => WC()->cart->get_total('edit'),
-            'card_size' => (Helper::get_option('card_size') + 30)
+            'card_size' => (float) Helper::get_option('card_size')
         ]);
         wp_enqueue_style('wc-mp-gateway-grid');
         ?>
@@ -113,6 +139,7 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
                     <select name="installments" id="installments">
                         <option disabled selected>Seleccionar Cuotas</option>
                     </select>
+                    <span class="installments_rate"></span>
                 </div>
             </div>
             <input type="hidden" name="hiddenCcNumber" data-checkout="cardNumber">
@@ -125,6 +152,13 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
 
     }
 
+    /**
+     * Process a payment when an order is placed
+     *
+     * @param int $order_id
+     * @return array|bool
+     * @throws \Exception
+     */
     public function process_payment($order_id)
     {
         $order = wc_get_order($order_id);
@@ -143,19 +177,63 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
             'payment_method_id' => filter_var($_POST['hiddenPaymentMethodId'], FILTER_SANITIZE_STRING),
             'installments_type' => filter_var($_POST['hiddenInstallmentsType'], FILTER_SANITIZE_STRING)
         ];
-        $mp_preference = new MP_Payment_Processor($order, $extradata);
-        $mp_preference = $mp_preference->create();
-
-        // If our payment fails for whatever reason, catch it
-        if (empty($mp_preference->status)) {
-            wc_add_notice(__('There was an error in the payment, please try again', 'wc-mp-gateway-checkout'), 'error');
-            return false;
+        $mp_payment = new MP_Payment_Processor($order, $extradata);
+        $mp_payment = $mp_payment->create();
+        if (empty($mp_payment->status)) {
+            Helper::log_error($mp_payment->error);
+            throw new \Exception(__('There was an error in the payment, please try again', 'wc-mp-gateway-checkout'));
         }
 
-
-        return $this->handle_payment_response($mp_preference->status, $mp_preference->status_detail, $this->get_return_url($order));
+        $this->handle_order_status_post_payment($order, $mp_payment->status, $mp_payment->status_detail, $mp_payment->id);
+        $res = $this->handle_payment_response($mp_payment->status, $mp_payment->status_detail, $this->get_return_url($order));
+        WC()->cart->empty_cart();
+        return $res;
     }
 
+    /**
+     * Takes care of the order status after the payment is sent to MercadoPago
+     *
+     * @param \WC_Order $order
+     * @param string $status
+     * @param string $status_reason
+     * @param integer $payment_id
+     * @return void
+     */
+    protected function handle_order_status_post_payment(\WC_Order $order, string $status, string $status_reason, int $payment_id)
+    {
+        if ($status === 'approved') {
+            $status = Helper::get_option('status_payment_approved', 'wc-completed');
+            $order->update_status(
+                $status,
+                sprintf(__('Mercadopago Gateway - Payment: %s was approved.', 'wc-mp-gateway-checkout'), $payment_id)
+            );
+        } elseif ($status === 'in_process') {
+            $status = Helper::get_option('status_payment_in_process', 'wc-pending');
+            $order->update_status(
+                $status,
+                sprintf(__('Mercadopago Gateway - Payment: %s is pending.', 'wc-mp-gateway-checkout'), $payment_id)
+            );
+        } else {
+            $status = Helper::get_option('status_payment_rejected', 'wc-failed');
+            $order->update_status(
+                $status,
+                sprintf(
+                    __('Mercadopago Gateway - Payment: %s was rejected. Reason: %s.', 'wc-mp-gateway-checkout'),
+                    $payment_id,
+                    self::handle_rejected_payment($status_reason)
+                )
+            );
+        }
+    }
+
+    /**
+     * Reads and handle the MercadoPago's response when a payment is sent
+     *
+     * @param string $status
+     * @param string $status_detail
+     * @param string $success_url
+     * @return void
+     */
     protected function handle_payment_response(string $status, string $status_detail, string $success_url)
     {
         if ($status === 'approved' || $status === 'in_process') {
@@ -163,37 +241,37 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
                 'result' => 'success',
                 'redirect' => $success_url
             ];
-        } else if ($status === 'rejected') {
+        } elseif ($status === 'rejected') {
             $msg = self::handle_rejected_payment($status_detail);
-            wc_add_notice($msg, 'error');
-            return false;
+            throw new \Exception($msg);
         } else {
-            wc_add_notice(__('There was an error in the payment, please try again', 'wc-mp-gateway-checkout'), 'error');
-            return false;
+            throw new \Exception(__('There was an error in the payment, please try again', 'wc-mp-gateway-checkout'));
         }
-        return [
-            'result' => 'failure',
-            'messages' => $msg
-        ];
     }
 
+    /**
+     * Translates MercadoPago's errors into human format
+     *
+     * @param string $status_detail
+     * @return string
+     */
     public static function handle_rejected_payment(string $status_detail)
     {
         $errors = [
-            'cc_rejected_bad_filled_card_number' => 'Revisa el número de tu tarjeta.',
-            'cc_rejected_bad_filled_date' => 'Revisa la fecha de vencimient de tu tarjetao.',
-            'cc_rejected_bad_filled_other' => 'Revisa los datos ingresados.',
-            'cc_rejected_bad_filled_security_code' => 'Revisa el código de seguridad ingresado.',
-            'cc_rejected_blacklist' => 'No pudimos procesar tu pago. Intenta con otra tarjeta',
-            'cc_rejected_call_for_authorize' => 'Debes autorizar este pago ante el emisor de tu tarjeta. El teléfono está al dorso de tu tarjeta.',
-            'cc_rejected_card_disabled' => 'Llama a tu emisor para que active tu tarjeta. El teléfono está al dorso de tu tarjeta.',
-            'cc_rejected_card_error' => 'No pudimos procesar tu pago.',
-            'cc_rejected_duplicated_payment' => 'Ya hiciste un pago por ese valor. Si necesitas volver a pagar usa otra tarjeta u otro medio de pago.',
-            'cc_rejected_high_risk' => 'Tu pago fue rechazado. Intenta nuevamente con otra tarjeta.',
-            'cc_rejected_insufficient_amount' => 'Tu tarjeta no tiene fondos suficientes.',
-            'cc_rejected_invalid_installments' => 'La tarjeta usada no procesa pagos cuotas.',
-            'cc_rejected_max_attempts' => 'Llegaste al límite de intentos permitidos. Intenta nuevamente con otra tarjeta.',
-            'cc_rejected_other_reason' => 'No se pudo realizar el pago, por favor intentá nuevamente.'
+            'cc_rejected_bad_filled_card_number' => __('Check your credit card number', 'wc-mp-gateway-checkout'),
+            'cc_rejected_bad_filled_date' => __('Check your credit card expiry date', 'wc-mp-gateway-checkout'),
+            'cc_rejected_bad_filled_other' => __('Check your credit card details', 'wc-mp-gateway-checkout'),
+            'cc_rejected_bad_filled_security_code' => __('Check your credit card security code', 'wc-mp-gateway-checkout'),
+            'cc_rejected_blacklist' => __('We could not process your payment. Please use another card', 'wc-mp-gateway-checkout'),
+            'cc_rejected_call_for_authorize' => __('You must authorize this payment with your credit card issuer. The phone number is in the back of your card', 'wc-mp-gateway-checkout'),
+            'cc_rejected_card_disabled' => __('Call your credit card issuer to activate your card. The phone number is in the back of your card', 'wc-mp-gateway-checkout'),
+            'cc_rejected_card_error' => __('We could not process your payment. Please use another card', 'wc-mp-gateway-checkout'),
+            'cc_rejected_duplicated_payment' => __('You already made a payment for this quantity, if you still need to pay, please use another credit card', 'wc-mp-gateway-checkout'),
+            'cc_rejected_high_risk' => __('Your payment was rejected. Please use another credit card', 'wc-mp-gateway-checkout'),
+            'cc_rejected_insufficient_amount' => __('Your credit card doesn\'t have enough funds to process this payment', 'wc-mp-gateway-checkout'),
+            'cc_rejected_invalid_installments' => __('Your credit card doesn\'t process installments', 'wc-mp-gateway-checkout'),
+            'cc_rejected_max_attempts' => __('You\'ve reached the limit of payment attempts. Please use another credit card', 'wc-mp-gateway-checkout'),
+            'cc_rejected_other_reason' => __('We could not process your payment. Please try again', 'wc-mp-gateway-checkout')
         ];
         return (!empty($errors[$status_detail]) ? $errors[$status_detail] : $errors['cc_rejected_other_reason']);
     }

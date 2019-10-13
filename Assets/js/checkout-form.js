@@ -39,7 +39,10 @@
 
     class FormHandler {
         constructor(formSelector) {
+            // Define our base form
             let form = document.querySelector(formSelector);
+
+            // Define our elements in our form
             this.elems = {
                 form: form,
                 ccName: form.querySelector('input[name="ccName"]'),
@@ -49,6 +52,7 @@
                 ccDocumentNumber: form.querySelector('input[name="docNumber"]'),
                 hiddenPaymentMethodId: form.querySelector('input[name="hiddenPaymentMethodId"]'),
                 installments: form.querySelector('select[name="installments"]'),
+                installmentsRateLabel: form.querySelector('.installments_rate'),
                 hiddenInstallmentsType: form.querySelector('input[name="hiddenInstallmentsType"]'),
                 ccHiddenNumber: form.querySelector('input[name="hiddenCcNumber"]'),
                 ccHiddenMonth: form.querySelector('input[name="hiddenExpiryMonth"]'),
@@ -62,6 +66,8 @@
                 cvc: null,
                 document: null
             };
+
+            // Instantiate the virtual card in the Checkout
             new Card({
                 form: this.elems.form,
                 container: '.wc-mp-gateway-form-card',
@@ -73,6 +79,8 @@
                 },
                 width: settings.card_size
             });
+
+            // Add listeners to the "reactive" fields
             this.elems.ccNumber.addEventListener('keyup', this.handleNewccNumber.bind(this));
             this.elems.ccExpiry.addEventListener('keyup', this.handleExpiryDateChange.bind(this));
             this.elems.installments.addEventListener('change', this.showInstallmentLabel.bind(this));
@@ -82,7 +90,7 @@
         showInstallmentLabel = () => {
             let selected = this.elems.installments.selectedIndex;
             let label = this.elems.installments.options[selected].getAttribute('data-label');
-            console.log(label);
+            this.elems.installmentsRateLabel.innerHTML = label;
         }
         createCardToken = () => {
 
