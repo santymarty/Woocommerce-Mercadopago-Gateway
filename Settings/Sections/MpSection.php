@@ -56,6 +56,13 @@ class MpSection extends Section implements SectionInterface
                 'description' => __('This is the prefix of the order receipt that your customers will see', 'wc-mp-gateway-checkout'),
                 'default' => 'WC-'
             ],
+            'sponsor_id' => [
+                'name' => __('Sponsor ID (Optional)', 'wc-mp-gateway-checkout'),
+                'slug' => 'sponsor_id',
+                'type' => 'text',
+                'description' => __('If you have a MercadoPago Sponsor ID, use it here. Or leave it blank.', 'wc-mp-gateway-checkout'),
+                'default' => ''
+            ],
             'status_payment_approved' => [
                 'name' => __('Status when the payment is approved', 'wc-mp-gateway-checkout'),
                 'slug' => 'status_payment_approved',

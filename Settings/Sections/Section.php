@@ -43,7 +43,9 @@ class Section
                 function () use ($setting) {
                     $fFactory = new FieldFactory();
                     $field = $fFactory->create($setting['slug']);
-                    if ($field !== false) $field->render();
+                    if ($field !== false) {
+                        $field->render();
+                    }
                 },
                 'wc-mp-gateway-checkout-settings',
                 $this->data['slug']

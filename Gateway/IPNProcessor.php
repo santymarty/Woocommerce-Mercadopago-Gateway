@@ -45,7 +45,9 @@ class IPNProcessor
     private function validate_input(array $data)
     {
         $data = wp_unslash($data);
-        if (empty($data['type']) || $data['type'] !== 'payment' || empty($data['data']['id'])) return false;
+        if (empty($data['type']) || $data['type'] !== 'payment' || empty($data['data']['id'])) {
+            return false;
+        }
         $payment_id = wc_sanitize_order_id($data['data']['id']);
 
         /**
@@ -56,11 +58,15 @@ class IPNProcessor
          * There is actually a workaround in #133 but it should be outdated in the incoming SDK Updates, so we skip it.
          */
         $request = wp_safe_remote_get('https://api.mercadopago.com/v1/payments/' . $payment_id . '?access_token=' . $this->access_token);
-        if (is_wp_error($request)) return false;
+        if (is_wp_error($request)) {
+            return false;
+        }
 
         $body = wp_remote_retrieve_body($request);
         $body = json_decode($body, true);
-        if (!empty($body['error'])) return true;
+        if (!empty($body['error'])) {
+            return true;
+        }
 
         $this->handle_payment($body);
         return true;
@@ -75,9 +81,13 @@ class IPNProcessor
     private function handle_payment(array $payment)
     {
         $reference = (empty($payment['external_reference']) ? null : filter_var($payment['external_reference'], FILTER_SANITIZE_STRING));
-        if (empty($reference)) return;
+        if (empty($reference)) {
+            return;
+        }
         $prefix = Helper::get_option('external_reference', 'WC-');
-        if (substr($reference, 0, 3) !== $prefix) return;
+        if (substr($reference, 0, 3) !== $prefix) {
+            return;
+        }
         $order_id = (int) str_replace($prefix, '', $reference);
         $order = wc_get_order($order_id);
         if (empty($order)) {

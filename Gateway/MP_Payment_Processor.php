@@ -41,6 +41,7 @@ class MP_Payment_Processor
         $shipment = $this->get_shipment();
         $payment->processing_mode = $this->installments_type;
         $payment->token = $this->token;
+        $payment->sponsor_id = $this->get_sponsor_id();
         $payment->binary_mode = $this->get_binary_mode();
         $payment->notification_url = $this->get_notification_url();
         $payment->installments = $this->installments;
@@ -196,5 +197,15 @@ class MP_Payment_Processor
     protected function get_notification_url()
     {
         return get_site_url(null, '/wc-api/mp-gateway-ipn');
+    }
+
+    /**
+     * Gets sponsor id for the payment
+     *
+     * @return string
+     */
+    protected function get_sponsor_id()
+    {
+        return Helper::get_option('sponsor_id', '');
     }
 }

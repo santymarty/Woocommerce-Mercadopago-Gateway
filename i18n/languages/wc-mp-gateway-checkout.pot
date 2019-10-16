@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Mercadopago Gateway Checkout\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-12 22:51+0000\n"
+"POT-Creation-Date: 2019-10-16 17:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -15,205 +15,213 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.3.0; wp-5.2.3"
 
-#: woocommerce-mercadopago-gateway.php:34
+#: woo-mercadopago-gateway.php:44
 #, php-format
 msgid ""
-"<strong>WooCommerce Mercadopago Gateway Checkout</strong> Requires at least "
-"%s version %s or greater.</p>"
+"<strong>Mercadopago Gateway Checkout for WooCommerce</strong> Requires at "
+"least %s version %s or greater.</p>"
 msgstr ""
 
-#: woocommerce-mercadopago-gateway.php:41
+#: woo-mercadopago-gateway.php:51
 msgid ""
-"WooCommerce must be active before using <strong>WooCommerce Mercadopago "
-"Gateway Checkout</strong>"
+"WooCommerce must be active before using <strong>Mercadopago Gateway Checkout "
+"for WooCommerce</strong>"
 msgstr ""
 
-#: woocommerce-mercadopago-gateway.php:107
+#: woo-mercadopago-gateway.php:138
 msgid "Settings"
 msgstr ""
 
-#: Gateway/IPNProcessor.php:76 Gateway/WC_MP_Gateway.php:166
+#: Gateway/IPNProcessor.php:108 Gateway/WC_MP_Gateway.php:208
 #, php-format
 msgid "Mercadopago Gateway - Payment: %s was approved."
 msgstr ""
 
-#: Gateway/IPNProcessor.php:83 Gateway/WC_MP_Gateway.php:172
+#: Gateway/IPNProcessor.php:115 Gateway/WC_MP_Gateway.php:214
 #, php-format
 msgid "Mercadopago Gateway - Payment: %s is pending."
 msgstr ""
 
-#: Gateway/IPNProcessor.php:92 Gateway/WC_MP_Gateway.php:179
+#: Gateway/IPNProcessor.php:124 Gateway/WC_MP_Gateway.php:221
 #, php-format
 msgid "Mercadopago Gateway - Payment: %s was rejected. Reason: %s."
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:32
+#: Gateway/WC_MP_Gateway.php:48
 msgid "Let your customers pay with MercadoPago Gateway"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:57
+#: Gateway/WC_MP_Gateway.php:78
 msgid "This controls the title which the customer sees during checkout."
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:58
+#: Gateway/WC_MP_Gateway.php:79
 msgid "MercadoPago"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:61
+#: Gateway/WC_MP_Gateway.php:82
 msgid "Message in checkout"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:63
+#: Gateway/WC_MP_Gateway.php:84
 msgid ""
 "Set your custom message to be shown in the checkout when the customer "
 "selects this payment method. Can be empty"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:64
+#: Gateway/WC_MP_Gateway.php:85
 msgid "Pay with Mercadopago, up to 12 installments with all credit cards"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:151 Gateway/WC_MP_Gateway.php:198
+#: Gateway/WC_MP_Gateway.php:184 Gateway/WC_MP_Gateway.php:248
 msgid "There was an error in the payment, please try again"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:205
+#: Gateway/WC_MP_Gateway.php:261
 msgid "Check your credit card number"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:206
+#: Gateway/WC_MP_Gateway.php:262
 msgid "Check your credit card expiry date"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:207
+#: Gateway/WC_MP_Gateway.php:263
 msgid "Check your credit card details"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:208
+#: Gateway/WC_MP_Gateway.php:264
 msgid "Check your credit card security code"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:209 Gateway/WC_MP_Gateway.php:212
+#: Gateway/WC_MP_Gateway.php:265 Gateway/WC_MP_Gateway.php:268
 msgid "We could not process your payment. Please use another card"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:210
+#: Gateway/WC_MP_Gateway.php:266
 msgid ""
 "You must authorize this payment with your credit card issuer. The phone "
 "number is in the back of your card"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:211
+#: Gateway/WC_MP_Gateway.php:267
 msgid ""
 "Call your credit card issuer to activate your card. The phone number is in "
 "the back of your card"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:213
+#: Gateway/WC_MP_Gateway.php:269
 msgid ""
 "You already made a payment for this quantity, if you still need to pay, "
 "please use another credit card"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:214
+#: Gateway/WC_MP_Gateway.php:270
 msgid "Your payment was rejected. Please use another credit card"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:215
+#: Gateway/WC_MP_Gateway.php:271
 msgid "Your credit card doesn't have enough funds to process this payment"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:216
+#: Gateway/WC_MP_Gateway.php:272
 msgid "Your credit card doesn't process installments"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:217
+#: Gateway/WC_MP_Gateway.php:273
 msgid ""
 "You've reached the limit of payment attempts. Please use another credit card"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:218
+#: Gateway/WC_MP_Gateway.php:274
 msgid "We could not process your payment. Please try again"
 msgstr ""
 
-#: Settings/Main.php:68
+#: Settings/Main.php:106
 msgid "Settings saved"
 msgstr ""
 
-#: Settings/Main.php:79
+#: Settings/Main.php:118
 msgid "Save"
 msgstr ""
 
-#: Settings/Sections/FrontendSection.php:13
+#: Settings/Sections/FrontendSection.php:19
 msgid "Checkout Configuration"
 msgstr ""
 
-#: Settings/Sections/FrontendSection.php:21
+#: Settings/Sections/FrontendSection.php:32
 msgid "Card Size"
 msgstr ""
 
-#: Settings/Sections/FrontendSection.php:26
+#: Settings/Sections/FrontendSection.php:37
 msgid ""
 "If the card doesn't show properly in your checkout, you can adjust its size "
 "here"
 msgstr ""
 
-#: Settings/Sections/MpSection.php:13
+#: Settings/Sections/MpSection.php:19
 msgid "MercadoPago Configuration"
 msgstr ""
 
-#: Settings/Sections/MpSection.php:25
+#: Settings/Sections/MpSection.php:36
 msgid "Your MercadoPago Public Key"
 msgstr ""
 
-#: Settings/Sections/MpSection.php:31
+#: Settings/Sections/MpSection.php:42
 msgid "Your MercadoPago Access Token"
 msgstr ""
 
-#: Settings/Sections/MpSection.php:34
+#: Settings/Sections/MpSection.php:45
 msgid "Set MercadoPago in binary mode"
 msgstr ""
 
-#: Settings/Sections/MpSection.php:37
+#: Settings/Sections/MpSection.php:48
 msgid ""
 "When this is activated, the payment goes approved or failed, it can't go to "
 "the pending state"
 msgstr ""
 
-#: Settings/Sections/MpSection.php:42
+#: Settings/Sections/MpSection.php:53
 msgid "Store prefix"
 msgstr ""
 
-#: Settings/Sections/MpSection.php:45
+#: Settings/Sections/MpSection.php:56
 msgid "This is the prefix of the order receipt that your customers will see"
 msgstr ""
 
-#: Settings/Sections/MpSection.php:49
+#: Settings/Sections/MpSection.php:60
+msgid "Sponsor ID (Optional)"
+msgstr ""
+
+#: Settings/Sections/MpSection.php:63
+msgid "If you have a MercadoPago Sponsor ID, use it here. Or leave it blank."
+msgstr ""
+
+#: Settings/Sections/MpSection.php:67
 msgid "Status when the payment is approved"
 msgstr ""
 
-#: Settings/Sections/MpSection.php:52
+#: Settings/Sections/MpSection.php:70
 msgid "This is the status the order will have when the payment is approved"
 msgstr ""
 
-#: Settings/Sections/MpSection.php:57
+#: Settings/Sections/MpSection.php:75
 msgid "Status when the payment is in process"
 msgstr ""
 
-#: Settings/Sections/MpSection.php:60
+#: Settings/Sections/MpSection.php:78
 msgid "This is the status the order will have when the payment is in process"
 msgstr ""
 
-#: Settings/Sections/MpSection.php:65
+#: Settings/Sections/MpSection.php:83
 msgid "Status when the payment is rejected"
 msgstr ""
 
-#: Settings/Sections/MpSection.php:68
+#: Settings/Sections/MpSection.php:86
 msgid "This is the status the order will have when the payment is rejected"
 msgstr ""
 
 #. Name of the plugin
-msgid "WooCommerce Mercadopago Gateway Checkout"
+msgid "Mercadopago Gateway Checkout for WooCommerce"
 msgstr ""
 
 #. Description of the plugin
@@ -222,11 +230,10 @@ msgid ""
 "checkout."
 msgstr ""
 
-#. URI of the plugin
-#. Author URI of the plugin
-msgid "https://macr1408.github.io/"
-msgstr ""
-
 #. Author of the plugin
 msgid "CRPlugins"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://github.com/macr1408"
 msgstr ""

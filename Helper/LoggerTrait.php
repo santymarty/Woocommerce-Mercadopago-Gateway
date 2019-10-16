@@ -9,7 +9,9 @@ trait LoggerTrait
     public static function init()
     {
         if (function_exists('wc_get_logger')) {
-            if (!isset(self::$logger)) self::$logger = wc_get_logger();
+            if (!isset(self::$logger)) {
+                self::$logger = wc_get_logger();
+            }
         }
     }
 

@@ -4,12 +4,11 @@ use CRPlugins\MPGatewayCheckout\Helper\Helper;
 
 /**
  * Plugin Name: Mercadopago Gateway Checkout for WooCommerce
- * Plugin URI: https://macr1408.github.io/
  * Description: Integration between Mercadopago Gateway and WooCommerce, using custom checkout.
  * Version: 1.0
  * Requires PHP: 7.0
  * Author: CRPlugins
- * Author URI: https://macr1408.github.io/
+ * Author URI: https://github.com/macr1408
  * Text Domain: wc-mp-gateway-checkout
  * Domain Path: /i18n/languages/
  * WC requires at least: 3.3
@@ -122,7 +121,7 @@ class WCMPGatewayCheckout
     public static function register_scripts()
     {
         wp_register_script('wc-mp-gateway-cc-card', plugin_dir_url(__FILE__) . 'Assets/js/card.min.js');
-        wp_register_script('wc-mp-gateway-cc-card-form', plugin_dir_url(__FILE__) . 'Assets/js/checkout-form.min.js', ['jquery']);
+        wp_register_script('wc-mp-gateway-cc-card-form', plugin_dir_url(__FILE__) . 'Assets/js/checkout-form.js', ['jquery']);
         wp_register_script('wc-mp-gateway-mp-sdk', 'https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js');
         wp_register_style('wc-mp-gateway-grid', plugin_dir_url(__FILE__) . 'Assets/css/grids-responsive-min.css');
         wp_register_style('wc-mp-gateway-settings-css', plugin_dir_url(__FILE__) . 'Assets/css/settings.min.css');

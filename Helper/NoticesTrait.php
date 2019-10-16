@@ -9,7 +9,9 @@ trait NoticesTrait
         $notices_types = ['error', 'success', 'info'];
         foreach ($notices_types as $type) {
             $notices = get_transient('wc-mp-gateway-checkout-' . $type . '-notices');
-            if (empty($notices)) continue;
+            if (empty($notices)) {
+                continue;
+            }
             foreach ($notices as $notice) {
                 echo '<div class="notice notice-' . $type . ' is-dismissible">';
                 echo '<p>' . $notice . '</p>';
@@ -28,7 +30,9 @@ trait NoticesTrait
             $notices = [$msg];
         }
         set_transient('wc-mp-gateway-checkout-' . $type . '-notices', $notices, 60);
-        if ($do_action) do_action('admin_notices');
+        if ($do_action) {
+            do_action('admin_notices');
+        }
     }
 
     public static function add_error(string $msg, bool $do_action = false)

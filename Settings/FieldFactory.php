@@ -21,7 +21,9 @@ class FieldFactory
     public function create(string $slug)
     {
         $fields = Main::get_settings_fields();
-        if (empty($fields[$slug])) return false;
+        if (empty($fields[$slug])) {
+            return false;
+        }
         switch ($fields[$slug]['type']) {
             case 'text':
                 $field = new TextField($fields[$slug]);

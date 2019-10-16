@@ -13,7 +13,9 @@
         let form = document.querySelector(MP_Form);
         MP_Helper.createToken(form);
         let previousToken = form.querySelector('input[name="CcToken"]');
-        if (!previousToken) return false;
+        if (!previousToken) {
+            return false;
+        }
     });
 
     let MP_Helper = {
@@ -108,17 +110,29 @@
             checkout_place_order_wc_mp_gateway event, but the MercadoPago SDK doesn't allow us to ask for 
             a card token in a synchronously way, making that event "useless" */
             let number = this.elems.ccHiddenNumber.value;
-            if (number.length < 16) return false;
+            if (number.length < 16) {
+                return false;
+            }
             let name = this.elems.ccName.value;
-            if (name.length < 3) return false;
+            if (name.length < 3) {
+                return false;
+            }
             let month = this.elems.ccHiddenMonth.value;
-            if (!month) return false;
+            if (!month) {
+                return false;
+            }
             let year = this.elems.ccHiddenYear.value;
-            if (!year) return false;
+            if (!year) {
+                return false;
+            }
             let cvc = this.elems.ccCvc.value;
-            if (cvc.length < 3) return false;
+            if (cvc.length < 3) {
+                return false;
+            }
             let document = this.elems.ccDocumentNumber.value;
-            if (document.length < 5) return false;
+            if (document.length < 5) {
+                return false;
+            }
 
             if (this.ccTokenValues.number !== number ||
                 this.ccTokenValues.month !== month ||
@@ -137,7 +151,9 @@
 
         handleNewccNumber = (e) => {
             let newBin = MP_Helper.getBin(this.elems.ccNumber.value);
-            if (newBin.length < 7 || oldBin === newBin) return;
+            if (newBin.length < 7 || oldBin === newBin) {
+                return;
+            }
             oldBin = newBin;
             newBin = newBin.replace(/\D/g, '');
             MP.getPaymentMethod({
@@ -162,7 +178,9 @@
         }
         setExpirationDates = (expDate) => {
             let dates = expDate.match(/[0-9]{2}/g);
-            if (dates.length !== 2) return false;
+            if (dates.length !== 2) {
+                return false;
+            }
             this.setMonthExpirationDate(dates[0]);
             this.setYearExpirationDate(dates[1]);
         }

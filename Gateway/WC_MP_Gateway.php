@@ -53,7 +53,9 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
         $this->has_fields = false;
 
         $access_token = Helper::get_option('access_token');
-        if (empty($access_token)) $this->enabled = false;
+        if (empty($access_token)) {
+            $this->enabled = false;
+        }
         \MercadoPago\SDK::setAccessToken($access_token);
         new IPNProcessor($access_token);
     }
