@@ -22,7 +22,7 @@ msgstr "<strong>%s/strong> Requiere al menos %s versión %s o mayor."
 #: woo-mercadopago-gateway-checkout.php:51
 #, php-format
 msgid "WooCommerce must be active before using <strong>%s</strong>"
-msgstr "WooCommerce debe estar activo antes de usar <strong>%s</strong>"
+msgstr ""
 
 #: woo-mercadopago-gateway-checkout.php:138
 msgid "Settings"

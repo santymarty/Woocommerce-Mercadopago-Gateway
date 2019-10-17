@@ -1,256 +1,240 @@
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Mercadopago Gateway Checkout\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-17 23:03+0000\n"
-"PO-Revision-Date: 2019-10-17 23:04+0000\n"
-"Last-Translator: prueba <marcos@ecomerciar.com>\n"
-"Language-Team: Español de Argentina\n"
-"Language: es_AR\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"POT-Creation-Date: 2019-10-17 23:02+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.3.0; wp-5.2.4"
+"X-Loco-Version: 2.3.0; wp-5.2.3"
 
 #: woo-mercadopago-gateway-checkout.php:44
 #, php-format
-msgid "<strong>%s/strong> Requires at least %s version %s or greater."
-msgstr "<strong>%s/strong> Requiere al menos %s versión %s o mayor."
+msgid "<strong>%s/strong> Requires at least %s version %s or greater.</p>"
+msgstr ""
 
 #: woo-mercadopago-gateway-checkout.php:51
 #, php-format
 msgid "WooCommerce must be active before using <strong>%s</strong>"
-msgstr "WooCommerce debe estar activo antes de usar <strong>%s</strong>"
+msgstr ""
 
 #: woo-mercadopago-gateway-checkout.php:138
 msgid "Settings"
-msgstr "Configuración"
+msgstr ""
 
 #: Gateway/IPNProcessor.php:118 Gateway/WC_MP_Gateway.php:211
 #, php-format
 msgid "Mercadopago Gateway - Payment: %s was approved."
-msgstr "Mercadopago Gateway - Pago: %s fue aprobado."
+msgstr ""
 
 #: Gateway/IPNProcessor.php:125 Gateway/WC_MP_Gateway.php:217
 #, php-format
 msgid "Mercadopago Gateway - Payment: %s is pending."
-msgstr "Mercadopago Gateway - Pago: %s está pendiente."
+msgstr ""
 
 #: Gateway/IPNProcessor.php:134 Gateway/WC_MP_Gateway.php:224
 #, php-format
 msgid "Mercadopago Gateway - Payment: %s was rejected. Reason: %s."
-msgstr "Mercadopago Gateway - Pago: %s fue rechazado. Motivo: %s."
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:48
 msgid "Let your customers pay with MercadoPago Gateway"
-msgstr "Permití a tus clientes pagar usando MercadoPago Gateway"
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:80
 msgid "This controls the title which the customer sees during checkout."
-msgstr "Esto controla el titulo que ve el cliente durante el checkout."
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:81
 msgid "MercadoPago"
-msgstr "MercadoPago"
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:84
 msgid "Message in checkout"
-msgstr "Mensaje en el checkout"
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:86
 msgid ""
 "Set your custom message to be shown in the checkout when the customer "
 "selects this payment method. Can be empty"
 msgstr ""
-"Escribí tu mensaje personalizado a ser mostrado en el checkout cuando el "
-"cliente selecciona este método de pago. Puede ser vacío"
 
 #: Gateway/WC_MP_Gateway.php:87
 msgid "Pay with Mercadopago, up to 12 installments with all credit cards"
 msgstr ""
-"Pagá con MercadoPago, hasta 12 cuotas con todas las tarjetas de crédito"
 
 #: Gateway/WC_MP_Gateway.php:106
 msgid "Please check your card details before proceeding"
-msgstr "Por favor verificá los datos de tu tarjeta antes de proceder"
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:187 Gateway/WC_MP_Gateway.php:251
 msgid "There was an error in the payment, please try again"
-msgstr "Hubo un error en el pago, por favor intentá nuevamente"
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:264
 msgid "Check your credit card number"
-msgstr "Revisá el número de tu tarjeta de crédito"
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:265
 msgid "Check your credit card expiry date"
-msgstr "Revisá la fecha de expiración de tu tarjeta de crédito"
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:266
 msgid "Check your credit card details"
-msgstr "Revisá los detalles de tu tarjeta de crédito"
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:267
 msgid "Check your credit card security code"
-msgstr "Revisá el código de seguridad de tu tarjeta de crédito"
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:268 Gateway/WC_MP_Gateway.php:271
 msgid "We could not process your payment. Please use another card"
-msgstr "No pudimos procesar el pago. Por favor intenta con otra tarjeta"
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:269
 msgid ""
 "You must authorize this payment with your credit card issuer. The phone "
 "number is in the back of your card"
 msgstr ""
-"Debes autorizar este pago con el emisor de tu tarjeta de crédito. El número "
-"de teléfono se encuentra en el dorso de tu tarjeta"
 
 #: Gateway/WC_MP_Gateway.php:270
 msgid ""
 "Call your credit card issuer to activate your card. The phone number is in "
 "the back of your card"
 msgstr ""
-"Contactá al emisor de tu tarjeta para activarla. El número se encuentra en "
-"el dorso de tu tarjeta"
 
 #: Gateway/WC_MP_Gateway.php:272
 msgid ""
 "You already made a payment for this quantity, if you still need to pay, "
 "please use another credit card"
 msgstr ""
-"Ya realizaste un pago por este monto, si aún necesitas realizar el pago, por "
-"favor utilizá otra tarjeta"
 
 #: Gateway/WC_MP_Gateway.php:273
 msgid "Your payment was rejected. Please use another credit card"
-msgstr "Tu pago fue rechazado. Por favor utilizá otra tarjeta"
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:274
 msgid "Your credit card doesn't have enough funds to process this payment"
-msgstr "Tu tarjeta no posee fondos suficientes para procesar esta transacción"
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:275
 msgid "Your credit card doesn't process installments"
-msgstr "Tu tarjeta no procesa la cantidad de cuotas seleccionadas"
+msgstr ""
 
 #: Gateway/WC_MP_Gateway.php:276
 msgid ""
 "You've reached the limit of payment attempts. Please use another credit card"
 msgstr ""
-"Alcanzaste el límite de intentos de pagos. Por favor utilizá otra tarjeta"
 
 #: Gateway/WC_MP_Gateway.php:277
 msgid "We could not process your payment. Please try again"
-msgstr "No pudimos procesar tu pago. Por favor intentá nuevamente"
+msgstr ""
 
 #: Settings/Main.php:106
 msgid "Settings saved"
-msgstr "Configuración guardada"
+msgstr ""
 
 #: Settings/Main.php:118
 msgid "Save"
-msgstr "Guardar"
+msgstr ""
 
 #: Settings/Sections/FrontendSection.php:19
 msgid "Checkout Configuration"
-msgstr "Configuración del Checkout"
+msgstr ""
 
 #: Settings/Sections/FrontendSection.php:32
 msgid "Card Size"
-msgstr "Tamaño de la tarjeta"
+msgstr ""
 
 #: Settings/Sections/FrontendSection.php:37
 msgid ""
 "If the card doesn't show properly in your checkout, you can adjust its size "
 "here"
 msgstr ""
-"Si la tarjeta no se muestra correctamente en tu checkout, podés ajustar el "
-"tamaño aquí"
 
 #: Settings/Sections/MpSection.php:19
 msgid "MercadoPago Configuration"
-msgstr "Configuración de MercadoPago"
+msgstr ""
 
 #: Settings/Sections/MpSection.php:36
 msgid "Your MercadoPago Public Key"
-msgstr "Tu Public Key de MercadoPago"
+msgstr ""
 
 #: Settings/Sections/MpSection.php:42
 msgid "Your MercadoPago Access Token"
-msgstr "Tu Access Token de MercadoPago"
+msgstr ""
 
 #: Settings/Sections/MpSection.php:45
 msgid "Set MercadoPago in binary mode"
-msgstr "Usar MercadoPago en modo binario"
+msgstr ""
 
 #: Settings/Sections/MpSection.php:48
 msgid ""
 "When this is activated, the payment goes approved or failed, it can't go to "
 "the pending state"
 msgstr ""
-"Cuando se activa, el pago es aprobado o rechazado, no puede estar pendiente"
 
 #: Settings/Sections/MpSection.php:53
 msgid "Store prefix"
-msgstr "Prefijo de la tienda"
+msgstr ""
 
 #: Settings/Sections/MpSection.php:56
 msgid "This is the prefix of the order receipt that your customers will see"
-msgstr "Esto es el prefijo que verán tus clientes en sus facturas de pago"
+msgstr ""
 
 #: Settings/Sections/MpSection.php:60
 msgid "Sponsor ID (Optional)"
-msgstr "Sponsor ID (Opcional)"
+msgstr ""
 
 #: Settings/Sections/MpSection.php:63
 msgid "If you have a MercadoPago Sponsor ID, use it here. Or leave it blank."
 msgstr ""
-"Si tenés un Sponsor ID de MercadoPago, colocalo aquí. O podés dejarlo en "
-"blanco"
 
 #: Settings/Sections/MpSection.php:67
 msgid "Status when the payment is approved"
-msgstr "Estado cuando el pago es aprobado"
+msgstr ""
 
 #: Settings/Sections/MpSection.php:70
 msgid "This is the status the order will have when the payment is approved"
-msgstr "Esto es el estado que tendrá el pedido cuando el pago sea aprobado"
+msgstr ""
 
 #: Settings/Sections/MpSection.php:75
 msgid "Status when the payment is in process"
-msgstr "Estado cuando el pago está en proceso"
+msgstr ""
 
 #: Settings/Sections/MpSection.php:78
 msgid "This is the status the order will have when the payment is in process"
-msgstr "Esto es el estado que tendrá el pedido cuando el pago esté en proceso"
+msgstr ""
 
 #: Settings/Sections/MpSection.php:83
 msgid "Status when the payment is rejected"
-msgstr "Estado cuando el pago es rechazado"
+msgstr ""
 
 #: Settings/Sections/MpSection.php:86
 msgid "This is the status the order will have when the payment is rejected"
-msgstr "Esto es el estado que tendrá el pedido cuando el pago sea rechazado"
+msgstr ""
 
 #. Name of the plugin
 msgid "Checkout Gateway for Mercadopago and WooCommerce"
-msgstr "Mercadopago Gateway Checkout para WooCommerce"
+msgstr ""
 
 #. Description of the plugin
 msgid ""
 "Integration between Mercadopago Gateway and WooCommerce, using custom "
 "checkout."
 msgstr ""
-"Integración entre Mercadopago Gateway y WooCommerce, usando checkout "
-"personalizado."
 
 #. Author of the plugin
 msgid "CRPlugins"
-msgstr "CRPlugins"
+msgstr ""
 
 #. Author URI of the plugin
 msgid "https://github.com/macr1408"
-msgstr "https://github.com/macr1408"
+msgstr ""

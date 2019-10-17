@@ -102,7 +102,8 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
         wp_localize_script('wc-mp-gateway-cc-card-form', 'wc_mp_gateway_settings', [
             'public_key' => Helper::get_option('public_key'),
             'cart_amount' => WC()->cart->get_total('edit'),
-            'card_size' => (float) Helper::get_option('card_size')
+            'card_size' => (float) Helper::get_option('card_size'),
+            'invalid_card_error_alert' => __('Please check your card details before proceeding', 'wc-mp-gateway-checkout')
         ]);
         wp_enqueue_style('wc-mp-gateway-grid');
         ?>

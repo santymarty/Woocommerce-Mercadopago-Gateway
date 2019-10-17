@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce Mercadopago Gateway Checkout\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-16 17:47+0000\n"
+"POT-Creation-Date: 2019-10-17 23:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -15,34 +15,31 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.3.0; wp-5.2.3"
 
-#: woo-mercadopago-gateway.php:44
+#: woo-mercadopago-gateway-checkout.php:44
 #, php-format
-msgid ""
-"<strong>Mercadopago Gateway Checkout for WooCommerce</strong> Requires at "
-"least %s version %s or greater.</p>"
+msgid "<strong>%s/strong> Requires at least %s version %s or greater."
 msgstr ""
 
-#: woo-mercadopago-gateway.php:51
-msgid ""
-"WooCommerce must be active before using <strong>Mercadopago Gateway Checkout "
-"for WooCommerce</strong>"
+#: woo-mercadopago-gateway-checkout.php:51
+#, php-format
+msgid "WooCommerce must be active before using <strong>%s</strong>"
 msgstr ""
 
-#: woo-mercadopago-gateway.php:138
+#: woo-mercadopago-gateway-checkout.php:138
 msgid "Settings"
 msgstr ""
 
-#: Gateway/IPNProcessor.php:108 Gateway/WC_MP_Gateway.php:208
+#: Gateway/IPNProcessor.php:118 Gateway/WC_MP_Gateway.php:211
 #, php-format
 msgid "Mercadopago Gateway - Payment: %s was approved."
 msgstr ""
 
-#: Gateway/IPNProcessor.php:115 Gateway/WC_MP_Gateway.php:214
+#: Gateway/IPNProcessor.php:125 Gateway/WC_MP_Gateway.php:217
 #, php-format
 msgid "Mercadopago Gateway - Payment: %s is pending."
 msgstr ""
 
-#: Gateway/IPNProcessor.php:124 Gateway/WC_MP_Gateway.php:221
+#: Gateway/IPNProcessor.php:134 Gateway/WC_MP_Gateway.php:224
 #, php-format
 msgid "Mercadopago Gateway - Payment: %s was rejected. Reason: %s."
 msgstr ""
@@ -51,88 +48,92 @@ msgstr ""
 msgid "Let your customers pay with MercadoPago Gateway"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:78
+#: Gateway/WC_MP_Gateway.php:80
 msgid "This controls the title which the customer sees during checkout."
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:79
+#: Gateway/WC_MP_Gateway.php:81
 msgid "MercadoPago"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:82
+#: Gateway/WC_MP_Gateway.php:84
 msgid "Message in checkout"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:84
+#: Gateway/WC_MP_Gateway.php:86
 msgid ""
 "Set your custom message to be shown in the checkout when the customer "
 "selects this payment method. Can be empty"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:85
+#: Gateway/WC_MP_Gateway.php:87
 msgid "Pay with Mercadopago, up to 12 installments with all credit cards"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:184 Gateway/WC_MP_Gateway.php:248
+#: Gateway/WC_MP_Gateway.php:106
+msgid "Please check your card details before proceeding"
+msgstr ""
+
+#: Gateway/WC_MP_Gateway.php:187 Gateway/WC_MP_Gateway.php:251
 msgid "There was an error in the payment, please try again"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:261
+#: Gateway/WC_MP_Gateway.php:264
 msgid "Check your credit card number"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:262
+#: Gateway/WC_MP_Gateway.php:265
 msgid "Check your credit card expiry date"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:263
+#: Gateway/WC_MP_Gateway.php:266
 msgid "Check your credit card details"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:264
+#: Gateway/WC_MP_Gateway.php:267
 msgid "Check your credit card security code"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:265 Gateway/WC_MP_Gateway.php:268
+#: Gateway/WC_MP_Gateway.php:268 Gateway/WC_MP_Gateway.php:271
 msgid "We could not process your payment. Please use another card"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:266
+#: Gateway/WC_MP_Gateway.php:269
 msgid ""
 "You must authorize this payment with your credit card issuer. The phone "
 "number is in the back of your card"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:267
+#: Gateway/WC_MP_Gateway.php:270
 msgid ""
 "Call your credit card issuer to activate your card. The phone number is in "
 "the back of your card"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:269
+#: Gateway/WC_MP_Gateway.php:272
 msgid ""
 "You already made a payment for this quantity, if you still need to pay, "
 "please use another credit card"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:270
+#: Gateway/WC_MP_Gateway.php:273
 msgid "Your payment was rejected. Please use another credit card"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:271
+#: Gateway/WC_MP_Gateway.php:274
 msgid "Your credit card doesn't have enough funds to process this payment"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:272
+#: Gateway/WC_MP_Gateway.php:275
 msgid "Your credit card doesn't process installments"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:273
+#: Gateway/WC_MP_Gateway.php:276
 msgid ""
 "You've reached the limit of payment attempts. Please use another credit card"
 msgstr ""
 
-#: Gateway/WC_MP_Gateway.php:274
+#: Gateway/WC_MP_Gateway.php:277
 msgid "We could not process your payment. Please try again"
 msgstr ""
 
@@ -221,7 +222,7 @@ msgid "This is the status the order will have when the payment is rejected"
 msgstr ""
 
 #. Name of the plugin
-msgid "Mercadopago Gateway Checkout for WooCommerce"
+msgid "Checkout Gateway for Mercadopago and WooCommerce"
 msgstr ""
 
 #. Description of the plugin

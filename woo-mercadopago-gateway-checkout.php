@@ -3,7 +3,7 @@
 use CRPlugins\MPGatewayCheckout\Helper\Helper;
 
 /**
- * Plugin Name: Mercadopago Gateway Checkout for WooCommerce
+ * Plugin Name: Checkout Gateway for Mercadopago and WooCommerce
  * Description: Integration between Mercadopago Gateway and WooCommerce, using custom checkout.
  * Version: 1.0
  * Requires PHP: 7.0
@@ -25,7 +25,7 @@ add_action('wp_enqueue_scripts', ['WCMPGatewayCheckout', 'register_scripts']);
  */
 class WCMPGatewayCheckout
 {
-    const PLUGIN_NAME = 'Mercadopago Gateway Checkout for WooCommerce';
+    const PLUGIN_NAME = 'Checkout Gateway for Mercadopago and WooCommerce';
     const MAIN_FILE = __FILE__;
     const MAIN_DIR = __DIR__;
 
@@ -41,14 +41,14 @@ class WCMPGatewayCheckout
         if ($system['flag']) {
             deactivate_plugins(plugin_basename(__FILE__));
             echo '<div class="notice notice-error is-dismissible">';
-            echo '<p>' . sprintf(__('<strong>Mercadopago Gateway Checkout for WooCommerce</strong> Requires at least %s version %s or greater.</p>', 'wc-mp-gateway-checkout'), $system['flag'], $system['version']) . '</p>';
+            echo '<p>' . sprintf(__('<strong>%s/strong> Requires at least %s version %s or greater.', 'wc-mp-gateway-checkout'), self::PLUGIN_NAME, $system['flag'], $system['version']) . '</p>';
             echo '</div>';
             return false;
         }
         if (!class_exists('WooCommerce')) {
             deactivate_plugins(plugin_basename(__FILE__));
             echo '<div class="notice notice-error is-dismissible">';
-            echo '<p>' . __('WooCommerce must be active before using <strong>Mercadopago Gateway Checkout for WooCommerce</strong>', 'wc-mp-gateway-checkout') . '</p>';
+            echo '<p>' . sprintf(__('WooCommerce must be active before using <strong>%s</strong>', 'wc-mp-gateway-checkout'), self::PLUGIN_NAME) . '</p>';
             echo '</div>';
             return false;
         }

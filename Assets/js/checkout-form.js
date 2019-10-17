@@ -14,6 +14,7 @@
         MP_Helper.createToken(form);
         let previousToken = form.querySelector('input[name="CcToken"]');
         if (!previousToken) {
+            alert(settings.invalid_card_error_alert);
             return false;
         }
     });
