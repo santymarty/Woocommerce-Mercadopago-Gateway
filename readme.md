@@ -1,12 +1,21 @@
 === Checkout Gateway for Mercadopago and WooCommerce ===
+
 Donate link: https://github.com/macr1408
+
 Contributors: Marcos
+
 Tags: mercadopago, payments, creditcard, gateway
+
 Requires at least: 4.8
+
 Tested up to: 5.2
+
 Requires PHP: 7.0
+
 Stable tag: 1.0
+
 License: GPLv2 or later
+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
 Plugin to connect MercadoPago's Gateway checkout with WooCommerce
@@ -43,10 +52,13 @@ Yes sure, this plugin is standalone and can work together with any plugin.
 
 == Screenshots ==
 
-![Sample 1](/Assets/sample-1.jpg)
-![Sample 2](/Assets/sample-2.jpg)
-![Sample 3](/Assets/sample-3.jpg)
-![Sample 4](/Assets/sample-4.jpg)
+![Sample 1](/Assets/img/sample-1.jpg)
+
+![Sample 2](/Assets/img/sample-2.jpg)
+
+![Sample 3](/Assets/img/sample-3.jpg)
+
+![Sample 4](/Assets/img/sample-4.jpg)
 
 == Changelog ==
 
