@@ -52,13 +52,11 @@ Yes sure, this plugin is standalone and can work together with any plugin.
 
 == Screenshots ==
 
-![Sample 1](/assets/sample-1.jpg)
-
-![Sample 2](/assets/sample-2.jpg)
-
-![Sample 3](/assets/sample-3.jpg)
-
-![Sample 4](/assets/sample-4.jpg)
+1. More than 12 installments, including bank promotions
+2. Shows CFT and TEA of the installment selected
+3. Interactive card working in real time
+4. Works with multiple cards issuers
+4. Settings sample
 
 == Changelog ==
 
