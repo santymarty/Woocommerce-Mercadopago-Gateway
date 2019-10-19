@@ -14,7 +14,7 @@ defined('ABSPATH') || class_exists('\WC_Payment_Gateway') || exit;
  */
 function wc_mp_gateway_add_method($gateways)
 {
-    $gateways[] = 'CRPlugins\MPGatewayCheckout\Gateway\WC_MP_Gateway';
+    $gateways[] = '\CRPlugins\MPGatewayCheckout\Gateway\WC_MP_Gateway';
     return $gateways;
 }
 
@@ -28,7 +28,6 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
      */
     public function __construct()
     {
-        require_once \WCMPGatewayCheckout::MAIN_DIR . '/vendor/autoload.php';
         // Load the settings.
         $this->init_form_fields();
         $this->init_settings();
@@ -37,7 +36,7 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
     }
 
     /**
-     * Establishes default settings, and loads SDK and IPN Processor
+     * Establishes default settings, and loads IPN Processor
      *
      * @return void
      */
@@ -56,7 +55,6 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
         if (empty($access_token)) {
             $this->enabled = false;
         }
-        \MercadoPago\SDK::setAccessToken($access_token);
         new IPNProcessor($access_token);
     }
 
@@ -181,14 +179,13 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
             'installments_type' => filter_var($_POST['hiddenInstallmentsType'], FILTER_SANITIZE_STRING)
         ];
         $mp_payment = new MP_Payment_Processor($order, $extradata);
-        $mp_payment = $mp_payment->create();
-        if (empty($mp_payment->status)) {
-            Helper::log_error($mp_payment->error);
+        $mp_payment = $mp_payment->process();
+        if (empty($mp_payment['status'])) {
             throw new \Exception(__('There was an error in the payment, please try again', 'wc-mp-gateway-checkout'));
         }
 
-        $this->handle_order_status_post_payment($order, $mp_payment->status, $mp_payment->status_detail, $mp_payment->id);
-        $res = $this->handle_payment_response($mp_payment->status, $mp_payment->status_detail, $this->get_return_url($order));
+        $this->handle_order_status_post_payment($order, $mp_payment['status'], $mp_payment['status_detail'], $mp_payment['id']);
+        $res = $this->handle_payment_response($mp_payment['status'], $mp_payment['status_detail'], $this->get_return_url($order));
         WC()->cart->empty_cart();
         return $res;
     }
@@ -198,11 +195,11 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
      *
      * @param \WC_Order $order
      * @param string $status
-     * @param string $status_reason
-     * @param integer $payment_id
+     * @param string|null $status_reason
+     * @param integer|null $payment_id
      * @return void
      */
-    protected function handle_order_status_post_payment(\WC_Order $order, string $status, string $status_reason, int $payment_id)
+    protected function handle_order_status_post_payment(\WC_Order $order, string $status, $status_reason, $payment_id)
     {
         if ($status === 'approved') {
             $status = Helper::get_option('status_payment_approved', 'wc-completed');
@@ -233,11 +230,11 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
      * Reads and handle the MercadoPago's response when a payment is sent
      *
      * @param string $status
-     * @param string $status_detail
+     * @param string|null $status_detail
      * @param string $success_url
      * @return void
      */
-    protected function handle_payment_response(string $status, string $status_detail, string $success_url)
+    protected function handle_payment_response(string $status, $status_detail, string $success_url)
     {
         if ($status === 'approved' || $status === 'in_process') {
             return [
@@ -255,10 +252,10 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
     /**
      * Translates MercadoPago's errors into human format
      *
-     * @param string $status_detail
+     * @param string|null $status_detail
      * @return string
      */
-    public static function handle_rejected_payment(string $status_detail)
+    public static function handle_rejected_payment($status_detail)
     {
         $errors = [
             'cc_rejected_bad_filled_card_number' => __('Check your credit card number', 'wc-mp-gateway-checkout'),

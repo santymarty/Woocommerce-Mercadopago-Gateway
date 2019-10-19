@@ -2,6 +2,7 @@
 
 namespace CRPlugins\MPGatewayCheckout\Gateway;
 
+use CRPlugins\MPGatewayCheckout\Api\MPApi;
 use CRPlugins\MPGatewayCheckout\Helper\Helper;
 
 /**
@@ -29,29 +30,36 @@ class MP_Payment_Processor
     /**
      * Creates a MercadoPago Payment using a WooCommerce Order
      *
-     * @return \MercadoPago\Payment
+     * @return array
      */
-    public function create()
+    public function process()
     {
-        $payment = new \MercadoPago\Payment();
-
         $items = $this->get_items();
         $payer = $this->get_payer_main();
         $payer_extra = $this->get_payer_extra();
         $shipment = $this->get_shipment();
-        $payment->processing_mode = $this->installments_type;
-        $payment->token = $this->token;
-        $payment->sponsor_id = $this->get_sponsor_id();
-        $payment->binary_mode = $this->get_binary_mode();
-        $payment->notification_url = $this->get_notification_url();
-        $payment->installments = $this->installments;
-        $payment->payment_method_id = $this->payment_method_id;
-        $payment->transaction_amount = $this->order->get_total('edit');
-        $payment->payer = $payer;
-        $payment->additional_info = $this->get_additional_info($payer_extra, $items, $shipment);
-        $payment->external_reference = $this->get_external_reference();
-        $payment->save();
-        return $payment;
+        $sponsor_id = $this->get_sponsor_id();
+        $payment = [];
+
+        $payment['processing_mode'] = $this->installments_type;
+        $payment['token'] = $this->token;
+        $payment['binary_mode'] = $this->get_binary_mode();
+        $payment['notification_url'] = $this->get_notification_url();
+        $payment['installments'] = (int) $this->installments;
+        $payment['payment_method_id'] = $this->payment_method_id;
+        $payment['transaction_amount'] = (float) $this->order->get_total('edit');
+        $payment['payer'] = $payer;
+        $payment['additional_info'] = [
+            'items' => $items,
+            'payer' => $payer_extra,
+            'shipments' => $shipment
+        ];
+        $payment['external_reference'] = $this->get_external_reference();
+        if (!empty($sponsor_id)) {
+            $payment['sponsor_id'] = (int) $sponsor_id;
+        }
+        $res = $this->execute($payment);
+        return $res;
     }
 
     /**
@@ -74,7 +82,6 @@ class MP_Payment_Processor
                 'quantity' => $item_qty,
                 'unit_price' => $unit_price
             ];
-            $item = Helper::convert_array_into_object($item);
             $items[] = $item;
         }
         return $items;
@@ -95,7 +102,6 @@ class MP_Payment_Processor
                 $this->order->get_billing_state() . ', ' .
                 $this->order->get_billing_country()
         ];
-        $address = Helper::convert_array_into_object($address);
         $payer = [
             'first_name' => $this->order->get_billing_first_name(),
             'last_name' => $this->order->get_billing_last_name(),
@@ -113,7 +119,7 @@ class MP_Payment_Processor
     {
         $payer = $this->get_payer();
         $payer['email'] = $this->order->get_billing_email();
-        return Helper::convert_array_into_object($payer);
+        return $payer;
     }
 
     /**
@@ -124,10 +130,11 @@ class MP_Payment_Processor
     protected function get_payer_extra()
     {
         $payer = $this->get_payer();
-        $phone = ['number' => (string) $this->order->get_billing_phone()];
-        $phone = Helper::convert_array_into_object($phone);
+        $phone = [
+            'number' => (string) $this->order->get_billing_phone()
+        ];
         $payer['phone'] = $phone;
-        return Helper::convert_array_into_object($payer);
+        return $payer;
     }
 
     /**
@@ -147,25 +154,7 @@ class MP_Payment_Processor
                     $this->order->get_shipping_country()
             ]
         ];
-        return Helper::convert_array_into_object($shipment);
-    }
-
-    /**
-     * Merges all the aditional info into one single object
-     *
-     * @param mixed $payer
-     * @param mixed $items
-     * @param mixed $shipment
-     * @return mixed
-     */
-    protected function get_additional_info($payer, $items, $shipment)
-    {
-        $additional_info = [
-            'items' => $items,
-            'payer' => $payer,
-            'shipments' => $shipment
-        ];
-        return Helper::convert_array_into_object($additional_info);
+        return $shipment;
     }
 
     /**
@@ -207,5 +196,12 @@ class MP_Payment_Processor
     protected function get_sponsor_id()
     {
         return Helper::get_option('sponsor_id', '');
+    }
+
+    public function execute(array $payment)
+    {
+        $api = new MPApi(Helper::get_option('access_token'));
+        $res = $api->post('/payments', $payment);
+        return $res;
     }
 }

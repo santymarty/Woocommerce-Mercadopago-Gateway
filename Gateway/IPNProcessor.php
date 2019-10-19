@@ -2,6 +2,7 @@
 
 namespace CRPlugins\MPGatewayCheckout\Gateway;
 
+use CRPlugins\MPGatewayCheckout\Api\MPApi;
 use CRPlugins\MPGatewayCheckout\Helper\Helper;
 
 /**
@@ -50,25 +51,10 @@ class IPNProcessor
         }
         $payment_id = wc_sanitize_order_id($data['data']['id']);
 
-        /**
-         * We use regular http request instead of SDK because the latter doesn't seem to work with payments notifications
-         * https://github.com/mercadopago/dx-php/issues/187
-         * https://github.com/mercadopago/dx-php/issues/133
-         * 
-         * There is actually a workaround in #133 but it should be outdated in the incoming SDK Updates, so we skip it.
-         */
-        $request = wp_safe_remote_get('https://api.mercadopago.com/v1/payments/' . $payment_id . '?access_token=' . $this->access_token);
-        if (is_wp_error($request)) {
-            return false;
-        }
+        $mp_api = new MPApi(Helper::get_option('access_token'));
+        $payment = $mp_api->get('/payments/' . $payment_id);
 
-        $body = wp_remote_retrieve_body($request);
-        $body = json_decode($body, true);
-        if (!empty($body['error'])) {
-            return true;
-        }
-
-        $this->handle_payment($body);
+        $this->handle_payment($payment);
         return true;
     }
 

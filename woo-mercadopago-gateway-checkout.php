@@ -106,6 +106,9 @@ class WCMPGatewayCheckout
         require_once __DIR__ . '/Settings/Sections/MpSection.php';
         require_once __DIR__ . '/Settings/Sections/FrontendSection.php';
 
+        require_once __DIR__ . '/Api/ApiConnector.php';
+        require_once __DIR__ . '/Api/ApiInterface.php';
+        require_once __DIR__ . '/Api/MPApi.php';
         require_once __DIR__ . '/Gateway/WC_MP_Gateway.php';
         require_once __DIR__ . '/Gateway/MP_Payment_Processor.php';
         require_once __DIR__ . '/Gateway/IPNProcessor.php';
@@ -121,7 +124,7 @@ class WCMPGatewayCheckout
     public static function register_scripts()
     {
         wp_register_script('wc-mp-gateway-cc-card', plugin_dir_url(__FILE__) . 'Assets/js/card.min.js');
-        wp_register_script('wc-mp-gateway-cc-card-form', plugin_dir_url(__FILE__) . 'Assets/js/checkout-form.js', ['jquery']);
+        wp_register_script('wc-mp-gateway-cc-card-form', plugin_dir_url(__FILE__) . 'Assets/js/checkout-form.min.js', ['jquery']);
         wp_register_script('wc-mp-gateway-mp-sdk', 'https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js');
         wp_register_style('wc-mp-gateway-grid', plugin_dir_url(__FILE__) . 'Assets/css/grids-responsive-min.css');
         wp_register_style('wc-mp-gateway-settings-css', plugin_dir_url(__FILE__) . 'Assets/css/settings.min.css');
@@ -135,7 +138,8 @@ class WCMPGatewayCheckout
      */
     public static function create_settings_link(array $links)
     {
-        $links[] = '<a href="' . esc_url(get_admin_url(null, 'options-general.php?page=wc-mp-gateway-checkout-settings')) . '">' . __('Settings', 'wc-mp-gateway-checkout') . '</a>';
+        $link = '<a href="' . esc_url(get_admin_url(null, 'options-general.php?page=wc-mp-gateway-checkout-settings')) . '">' . __('Settings', 'wc-mp-gateway-checkout') . '</a>';
+        array_unshift($links, $link);
         return $links;
     }
 
