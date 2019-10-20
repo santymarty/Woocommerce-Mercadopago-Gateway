@@ -47,7 +47,7 @@ Yes sure, this plugin is standalone and can work together with any plugin.
 2. Shows CFT and TEA of the installment selected
 3. Interactive card working in real time
 4. Works with multiple cards issuers
-4. Settings sample
+5. Settings sample
 
 == Changelog ==
 
