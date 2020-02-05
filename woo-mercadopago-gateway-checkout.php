@@ -5,7 +5,7 @@ use CRPlugins\MPGatewayCheckout\Helper\Helper;
 /**
  * Plugin Name: Checkout Gateway for Mercadopago and WooCommerce
  * Description: Integration between Mercadopago Gateway and WooCommerce, using custom checkout.
- * Version: 1.0.0
+ * Version: 1.2.0
  * Requires PHP: 7.0
  * Author: CRPlugins
  * Author URI: https://github.com/macr1408
@@ -85,11 +85,15 @@ class WCMPGatewayCheckout
      */
     public static function init()
     {
-        if (!self::check_system()) return false;;
+        if (!self::check_system()) {
+            return false;
+        }
+
         require_once __DIR__ . '/Hooks.php';
         require_once __DIR__ . '/Helper/NoticesTrait.php';
         require_once __DIR__ . '/Helper/LoggerTrait.php';
         require_once __DIR__ . '/Helper/SettingsTrait.php';
+        require_once __DIR__ . '/Helper/WooCommerceTrait.php';
         require_once __DIR__ . '/Helper/Helper.php';
 
         require_once __DIR__ . '/Settings/Main.php';

@@ -5,7 +5,7 @@ Tags: mercadopago, payments, creditcard, gateway
 Requires at least: 4.8
 Tested up to: 5.2
 Requires PHP: 7.0
-Stable tag: 1.0.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
@@ -50,6 +50,12 @@ Yes sure, this plugin is standalone and can work together with any plugin.
 5. Settings sample
 
 == Changelog ==
+
+= 1.2.0 =
+Fix price not calculating correctly when getting installments
+
+= 1.1.0 =
+Fix JS broken in checkout with Ajax
 
 = 1.0 =
 First release

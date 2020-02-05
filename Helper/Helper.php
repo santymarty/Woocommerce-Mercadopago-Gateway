@@ -7,6 +7,7 @@ class Helper
     use NoticesTrait;
     use LoggerTrait;
     use SettingsTrait;
+    use WooCommerceTrait;
 
     public static function convert_array_into_object(array $array)
     {

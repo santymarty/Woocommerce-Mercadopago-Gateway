@@ -2,12 +2,15 @@
 
 ((settings, MP, $) => {
 
-    let oldBin;
+    let cartPrice = parseFloat(settings.amount);
     const MP_Form = '.wc-mp-gateway-form';
 
     MP.setPublishableKey(settings.public_key);
 
-    $(document.body).on('updated_checkout', () => new FormHandler(MP_Form));
+    $(document.body).on('updated_checkout', () => {
+        cartPrice = refreshCartPrice();
+        new FormHandler(MP_Form);
+    });
 
     $('form.checkout.woocommerce-checkout').on('checkout_place_order_wc_mp_gateway', () => {
         let form = document.querySelector(MP_Form);
@@ -18,6 +21,14 @@
             return false;
         }
     });
+
+    function refreshCartPrice() {
+        $.post(settings.ajax_url, { action: 'wc_mp_gateway_checkout_get_cart_price' }, function (data, status, xhr) {
+            if (data.success) {
+                cartPrice = parseFloat(data.data);
+            }
+        });
+    }
 
     let MP_Helper = {
         getBin: (number) => number.substring(0, 7),
@@ -152,17 +163,16 @@
 
         handleNewccNumber = (e) => {
             let newBin = MP_Helper.getBin(this.elems.ccNumber.value);
-            if (newBin.length < 7 || oldBin === newBin) {
+            if (newBin.length < 7) {
                 return;
             }
-            oldBin = newBin;
             newBin = newBin.replace(/\D/g, '');
             MP.getPaymentMethod({
                 'bin': newBin
             }, this.setPaymentMethodInfo.bind(this));
             MP.getInstallments({
                 'bin': newBin,
-                'amount': settings.cart_amount
+                'amount': cartPrice
             }, this.setInstallmentsInfo.bind(this));
         }
         handleExpiryDateChange(e) {
