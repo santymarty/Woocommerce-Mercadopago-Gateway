@@ -12,7 +12,7 @@ Tested up to: 5.2
 
 Requires PHP: 7.0
 
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 
 License: GPLv2 or later
 
@@ -59,6 +59,9 @@ Yes sure, this plugin is standalone and can work together with any plugin.
 5. Settings sample
 
 == Changelog ==
+
+= 1.2.1 =
+Fix js bug, add security to ajax call
 
 = 1.2.0 =
 Fix price not calculating correctly when getting installments
