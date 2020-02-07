@@ -8,7 +8,7 @@
     MP.setPublishableKey(settings.public_key);
 
     $(document.body).on('updated_checkout', () => {
-        cartPrice = refreshCartPrice();
+        refreshCartPrice();
         new FormHandler(MP_Form);
     });
 
@@ -23,7 +23,7 @@
     });
 
     function refreshCartPrice() {
-        $.post(settings.ajax_url, { action: 'wc_mp_gateway_checkout_get_cart_price' }, function (data, status, xhr) {
+        $.post(settings.ajax_url, { action: 'wc_mp_gateway_checkout_get_cart_price', nonce: settings.ajax_nonce }, function (data, status, xhr) {
             if (data.success) {
                 cartPrice = parseFloat(data.data);
             }
