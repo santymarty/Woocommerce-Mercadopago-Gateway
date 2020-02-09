@@ -8,11 +8,11 @@ Tags: mercadopago, payments, creditcard, gateway
 
 Requires at least: 4.8
 
-Tested up to: 5.2
+Tested up to: 5.3.2
 
 Requires PHP: 7.0
 
-Stable tag: 1.2.1
+Stable tag: 1.3
 
 License: GPLv2 or later
 
@@ -59,6 +59,9 @@ Yes sure, this plugin is standalone and can work together with any plugin.
 5. Settings sample
 
 == Changelog ==
+
+= 1.3 =
+Fix versioning and updated wordpress compatibility
 
 = 1.2.1 =
 Fix js bug, add security to ajax call
