@@ -5,14 +5,14 @@ use CRPlugins\MPGatewayCheckout\Helper\Helper;
 /**
  * Plugin Name: Checkout Gateway for Mercadopago and WooCommerce
  * Description: Integration between Mercadopago Gateway and WooCommerce, using custom checkout.
- * Version: 1.3
+ * Version: 1.3.1
  * Requires PHP: 7.0
  * Author: CRPlugins
  * Author URI: https://github.com/macr1408
  * Text Domain: wc-mp-gateway-checkout
  * Domain Path: /i18n/languages/
  * WC requires at least: 3.3
- * WC tested up to: 3.6
+ * WC tested up to: 3.9
  */
 
 defined('ABSPATH') || exit;

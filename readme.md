@@ -60,6 +60,9 @@ Yes sure, this plugin is standalone and can work together with any plugin.
 
 == Changelog ==
 
+= 1.3.1 =
+Fix bug with method id preventing the ability to enable or disable the payment method
+
 = 1.3 =
 Fix versioning and updated wordpress compatibility
 
