@@ -28,11 +28,14 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
      */
     public function __construct()
     {
+        // Setup general properties.
+        $this->setup_properties();
+
         // Load the settings.
         $this->init_form_fields();
         $this->init_settings();
-        // Setup general properties.
-        $this->setup_properties();
+
+        add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
     }
 
     /**
@@ -47,7 +50,6 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
         $this->method_description = __('Let your customers pay with MercadoPago Gateway', 'wc-mp-gateway-checkout');
         $this->description = $this->get_option('description');
         $this->title = $this->get_option('title');
-        $this->enabled = $this->get_option('enabled');
         $this->countries = 'AR';
         $this->has_fields = false;
 
@@ -106,7 +108,7 @@ class WC_MP_Gateway extends \WC_Payment_Gateway_CC
             'invalid_card_error_alert' => __('Please check your card details before proceeding', 'wc-mp-gateway-checkout')
         ]);
         wp_enqueue_style('wc-mp-gateway-grid');
-?>
+        ?>
         <div class="wc-mp-gateway-form-card"></div>
         <div class="wc-mp-gateway-form wc-mp-gateway-wrapper">
             <div class="row">
