@@ -51,6 +51,9 @@ Yes sure, this plugin is standalone and can work together with any plugin.
 
 == Changelog ==
 
+= 1.3.2 =
+Fix bug where price was not being calculated correctly for guest customers
+
 = 1.3.1 =
 Fix bug with method id preventing the ability to enable or disable the payment method
 

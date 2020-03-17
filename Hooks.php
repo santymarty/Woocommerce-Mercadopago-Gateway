@@ -14,3 +14,4 @@ add_action('admin_enqueue_scripts', ['CRPlugins\MPGatewayCheckout\Settings\Main'
 // --- Payment Method
 add_filter('woocommerce_payment_gateways', '\CRPlugins\MPGatewayCheckout\Gateway\wc_mp_gateway_add_method');
 add_action('wp_ajax_wc_mp_gateway_checkout_get_cart_price', ['CRPlugins\MPGatewayCheckout\Helper\Helper', 'ajax_get_cart_price']);
+add_action('wp_ajax_nopriv_wc_mp_gateway_checkout_get_cart_price', ['CRPlugins\MPGatewayCheckout\Helper\Helper', 'ajax_get_cart_price']);
